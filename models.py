@@ -50,6 +50,8 @@ def main(k):
     scalerx = MinMaxScaler().fit(data_x)
     X_std = scalerx.fit_transform(data_x)
     scalery = MinMaxScaler()
+
+    
    # Y_std = scalery.fit_transform(data_y.reshape(-1,1))
     Y_std = data_y.reshape(-1,1)
     X_train, X_test, y_train, y_test = train_test_split(X_std, Y_std, train_size = 0.80,random_state=0)
@@ -61,7 +63,7 @@ def main(k):
 
 
     #model yüzde 70 doğru sınıfladı
-    svmmodel = svm.SVR(gamma=0.001, C=100, kernel = 'linear') 
+    svmmodel = svm.SVC(gamma=0.001, C=100, kernel = 'linear') 
     svmmodel.fit(X_train, y_train)
     # #pd.Series(abs(svm.coef_[0]), index=features.columns).nlargest(10).plot(kind='barh')
     y_pred = svmmodel.predict(X_test)

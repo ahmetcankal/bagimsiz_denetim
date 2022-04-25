@@ -2,7 +2,7 @@ import pandas as pd
 sonuclar=[]
 from models import main
 
-for k in range(5,36,1):
+for k in range(3,13,1):
     test,train = main(k)
     sonuclar.append([k,test,train])
 

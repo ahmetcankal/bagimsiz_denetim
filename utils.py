@@ -12,13 +12,14 @@
 # x = data[data['hisseadi'] == 'ARCLK']
 # x.info()
 import pandas as pd
-from sklearn.feature_selection import SelectKBest, f_regression
+from sklearn.feature_selection import SelectKBest, chi2, f_regression
+from sklearn.preprocessing import MinMaxScaler
 
 def loaddata(k):
-    data = pd.read_excel('unempdata.xlsx',sheet_name=0)
+    data = pd.read_csv('erdemveri01.csv',sep=";")
     
-    data_y=data.loc[:,"Unemp_rate"]
-    data_x=data.loc[:,"wti_oil_average":"gbp_try"]
+    data_y=data.loc[:,"Y"]
+    data_x=data.loc[:,"CO":"ROIC"]
     feature_names = list(data_x.columns)
     Selected_feature_names=fs(data_x,data_y,k)
     data_x = data_x[data_x.columns.intersection(Selected_feature_names)]
@@ -30,8 +31,12 @@ def loaddata(k):
 
 
 def fs(X,y,_k):
-    selector=SelectKBest(score_func=f_regression, k=_k)
-    model= selector.fit(X,y)
+    scalerx = MinMaxScaler().fit(X)
+    Xs = scalerx.fit_transform(X)
+    scalery = MinMaxScaler()
+    #Y_std = y.reshape(-1,1)
+    selector=SelectKBest(score_func=chi2,k=_k)
+    model= selector.fit(Xs,y)
     Selected_feature_names=X.columns[model.get_support()]
     skor=model.scores_
     zipped=zip(Selected_feature_names,skor)
