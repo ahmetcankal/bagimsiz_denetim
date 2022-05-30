@@ -20,6 +20,11 @@ from sklearn.datasets import load_digits
 from sklearn.feature_selection import SelectKBest, chi2, f_regression
 
 
+param_C_linear = 10000
+param_C_poly = 100
+param_C_rbf = 1000
+param_C_sigmoid = 1000 
+
 
 def f_importances(coef, names):
     imp = coef[0]
@@ -28,72 +33,73 @@ def f_importances(coef, names):
     # plt.yticks(range(len(names)), names)
     # plt.show()
 
-
-
-def main(k):
-    # Select gov
-    # "ireland","italy","greece","portugal","spain"
-    data_x, data_y, feature_names = utils.loaddata(k)
-    #model = LogisticRegression(solver='liblinear', random_state=0).fit(data_x,data_y)
-  
-   
-
-
-    #################### SVC sınıflandırma işlemi#######
-    # X = data_x
-    # Y = data_ysinif
-    # features_names = feature_names
-
-    ############ sınıflandırma bölümü bitti  veriler normalize ediliyor ##########
-  
-
+def normalize_data(data_x, data_y):
     scalerx = MinMaxScaler().fit(data_x)
     X_std = scalerx.fit_transform(data_x)
-    scalery = MinMaxScaler()
-
-    
-   # Y_std = scalery.fit_transform(data_y.reshape(-1,1))
+    scalery = MinMaxScaler() 
     Y_std = data_y.reshape(-1,1)
-    X_train, X_test, y_train, y_test = train_test_split(X_std, Y_std, train_size = 0.80,random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X_std, Y_std, 
+                                            train_size = 0.80,random_state=0)
 
-    #X_train, X_test, y_train, y_test = train_test_split(data_x, data_y, train_size = 0.70,random_state=0)
+    return X_train, X_test, y_train, y_test
 
+############ nu support vector Machines ########################
+def support_vector_machine_linear(data_x, data_y, feature_names, k, plotting):
+
+    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+    svmmodel = svm.SVC(gamma=0.001,  C=param_C_linear, kernel = 'linear') 
+    svmodel=svmmodel.fit(X_train, y_train.ravel())
    
+    train_score = svmodel.score(X_train, y_train)
+    test_score = svmodel.score(X_test, y_test)
 
+    if plotting:
+        print("- train score:\t"+str(train_score)) 
+        print("- test score:\t"+str(test_score))  
 
+    return test_score, train_score
 
-    #model yüzde 70 doğru sınıfladı
-    svmmodel = svm.SVC(gamma=0.001, C=100, kernel = 'linear') 
-    svmmodel.fit(X_train, y_train)
-    # #pd.Series(abs(svm.coef_[0]), index=features.columns).nlargest(10).plot(kind='barh')
-    y_pred = svmmodel.predict(X_test)
-    print(svmmodel.score(X_test, y_test))
+def support_vector_machine_poly(data_x, data_y, feature_names, k, plotting):
 
-    testScore = svmmodel.score(X_test,y_test)
-    print("test score:")
-    print(testScore)
+    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
 
-    Trainscore = svmmodel.score(X_train,y_train)
-    print("train score:")
-    print(Trainscore)
+    lin_reg_model = svm.SVC( C=param_C_poly, degree=3, kernel="poly")
+    lin_reg_model.fit(X_train, y_train.ravel())
+    train_score = lin_reg_model.score(X_train, y_train)
+    test_score = lin_reg_model.score(X_test, y_test)
 
-    # logreg = LogisticRegression(C=1e5)
-    # logreg.fit(X_train, y_train)
+    if plotting:
+        print("- train score:\t"+str(train_score)) 
+        print("- test score:\t"+str(test_score))  
 
-    # y_predl=logreg.predict(X_test)
-    y_pred = svmmodel.predict(X_test)
-    ####################################
-   # Plot the hyperplane
-    # cml = confusion_matrix(y_test, y_predl)
-    # print(cml)
-    # print(logreg.score(X_test, y_test))
+    return test_score, train_score
 
-    # cm = confusion_matrix(y_test, y_pred)
-    # print(cm)
-    # print(svmmodel.score(X_test, y_test))
-    f_importances(svmmodel.coef_, feature_names)
+def support_vector_machine_rbf(data_x, data_y, feature_names, k, plotting):
 
-    # report = classification_report(y_test, y_pred)
-    # print(report)
+    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
 
-    return testScore,Trainscore
+    lin_reg_model = svm.SVC( C=param_C_rbf, kernel="rbf")
+    lin_reg_model.fit(X_train, y_train.ravel())
+    train_score = lin_reg_model.score(X_train, y_train)
+    test_score = lin_reg_model.score(X_test, y_test)
+
+    if plotting:
+        print("- train score:\t"+str(train_score)) 
+        print("- test score:\t"+str(test_score))  
+
+    return test_score, train_score
+
+def support_vector_machine_sigmoid(data_x, data_y, feature_names, k, plotting):
+
+    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+
+    lin_reg_model = svm.SVC(C=param_C_sigmoid, kernel="sigmoid")
+    lin_reg_model.fit(X_train, y_train.ravel())
+    train_score = lin_reg_model.score(X_train, y_train)
+    test_score = lin_reg_model.score(X_test, y_test)
+
+    if plotting:
+        print("- train score:\t"+str(train_score)) 
+        print("- test score:\t"+str(test_score))  
+
+    return test_score, train_score
