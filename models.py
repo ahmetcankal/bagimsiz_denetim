@@ -6,7 +6,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
+#machine algorithms
 from sklearn import svm
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.ensemble import RandomForestClassifier
+
 #from sklearn.svm import SVR
 import utils
 import math
@@ -18,6 +24,8 @@ from sklearn.metrics import classification_report
 
 from sklearn.datasets import load_digits
 from sklearn.feature_selection import SelectKBest, chi2, f_regression
+from sklearn import neighbors
+
 
 
 param_C_linear = 10000
@@ -97,6 +105,81 @@ def support_vector_machine_sigmoid(data_x, data_y, feature_names, k, plotting):
     lin_reg_model.fit(X_train, y_train.ravel())
     train_score = lin_reg_model.score(X_train, y_train)
     test_score = lin_reg_model.score(X_test, y_test)
+
+    if plotting:
+        print("- train score:\t"+str(train_score)) 
+        print("- test score:\t"+str(test_score))  
+
+    return test_score, train_score
+
+
+
+################# K Neighbors classifier ##############################
+
+def k_neighbors_class(data_x, data_y, feature_names, k, plotting):
+
+    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+
+    n_neighbors = 5
+    knr_model = neighbors.KNeighborsClassifier(n_neighbors, weights="distance", algorithm="kd_tree")
+    knr_model.fit(X_train, y_train.ravel())
+    train_score = knr_model.score(X_train, y_train)
+    test_score = knr_model.score(X_test, y_test)
+
+    if plotting:
+        print("- train score:\t"+str(train_score)) 
+        print("- test score:\t"+str(test_score))  
+
+    return test_score, train_score
+
+
+    ################# Decision Tree class ##############################
+
+def Decision_Tree_class(data_x, data_y, feature_names, k, plotting):
+
+    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+
+    
+    dt_model = DecisionTreeClassifier()
+    dt_model.fit(X_train, y_train.ravel())
+    train_score = dt_model.score(X_train, y_train)
+    test_score = dt_model.score(X_test, y_test)
+
+    if plotting:
+        print("- train score:\t"+str(train_score)) 
+        print("- test score:\t"+str(test_score))  
+
+    return test_score, train_score
+
+        ################# random forest class ##############################
+
+def Random_forest(data_x, data_y, feature_names, k, plotting):
+
+    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+
+    
+    dt_model = RandomForestClassifier(n_estimators=100,criterion='gini')
+    dt_model.fit(X_train, y_train.ravel())
+    train_score = dt_model.score(X_train, y_train)
+    test_score = dt_model.score(X_test, y_test)
+
+    if plotting:
+        print("- train score:\t"+str(train_score)) 
+        print("- test score:\t"+str(test_score))  
+
+    return test_score, train_score
+
+            ################# naive bayes class ##############################
+
+def naivebayes(data_x, data_y, feature_names, k, plotting):
+
+    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+
+    
+    dt_model = GaussianNB()
+    dt_model.fit(X_train, y_train.ravel())
+    train_score = dt_model.score(X_train, y_train)
+    test_score = dt_model.score(X_test, y_test)
 
     if plotting:
         print("- train score:\t"+str(train_score)) 

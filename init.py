@@ -4,6 +4,7 @@ import models
 import utils
 
 
+
 all_results={}
 total_tests = 0
 isPlotting = False
@@ -70,7 +71,63 @@ utils.stop_timer(initial, "svr_sigmoid")
 utils.save_results(results, "svr_sigmoid")
 utils.plot_results(results, False, "svr_sigmoid")
 
+######################## k neighbors class method #################################
+initial = utils.start_timer()
+results=[]
+for k in range(3,13,1):
+    data_x, data_y, feature_names = utils.load_excel_data(
+        'Data/data.xlsx', 0, k, "k_neighbors")
+    test,train = models.k_neighbors_class(data_x, data_y, 
+                                                  feature_names, k, isPlotting)
+    results.append([k,test,train])
+all_results["k_neighbors"] = results
+utils.stop_timer(initial, "k_neighbors")
+utils.save_results(results, "k_neighbors")
+utils.plot_results(results, False, "k_neighbors")
 
+######################## decision t class method #################################
+initial = utils.start_timer()
+results=[]
+for k in range(3,13,1):
+    data_x, data_y, feature_names = utils.load_excel_data(
+        'Data/data.xlsx', 0, k, "decision_tree")
+    test,train = models.Decision_Tree_class(data_x, data_y, 
+                                                  feature_names, k, isPlotting)
+    results.append([k,test,train])
+all_results["decision_tree"] = results
+utils.stop_timer(initial, "decision_tree")
+utils.save_results(results, "decision_tree")
+utils.plot_results(results, False, "decision_tree")
+
+######################## random forest class method #################################
+initial = utils.start_timer()
+results=[]
+for k in range(3,13,1):
+    data_x, data_y, feature_names = utils.load_excel_data(
+        'Data/data.xlsx', 0, k, "random_forest")
+    test,train = models.Random_forest(data_x, data_y, 
+                                                  feature_names, k, isPlotting)
+    results.append([k,test,train])
+all_results["random_forest"] = results
+utils.stop_timer(initial, "random_forest")
+utils.save_results(results, "random_forest")
+utils.plot_results(results, False, "random_forest")
+
+
+
+######################## naive bayes class method #################################
+initial = utils.start_timer()
+results=[]
+for k in range(3,13,1):
+    data_x, data_y, feature_names = utils.load_excel_data(
+        'Data/data.xlsx', 0, k, "naive_bayes")
+    test,train = models.naivebayes(data_x, data_y, 
+                                                  feature_names, k, isPlotting)
+    results.append([k,test,train])
+all_results["naive_bayes"] = results
+utils.stop_timer(initial, "naive_bayes")
+utils.save_results(results, "naive_bayes")
+utils.plot_results(results, False, "naive_bayes")
 
 
 
