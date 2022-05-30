@@ -20,11 +20,12 @@ from sklearn.preprocessing import StandardScaler,MinMaxScaler
 from sklearn.metrics import confusion_matrix
 from matplotlib.colors import ListedColormap
 from sklearn.svm import LinearSVC
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 
 from sklearn.datasets import load_digits
 from sklearn.feature_selection import SelectKBest, chi2, f_regression
 from sklearn import neighbors
+from sklearn import metrics
 
 
 

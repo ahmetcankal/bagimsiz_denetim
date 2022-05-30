@@ -10,6 +10,9 @@ total_tests = 0
 isPlotting = False
 utils.create_folder("Results") 
 
+acclist=[]
+auclist=[]
+cmlist=[]
 
 
 
