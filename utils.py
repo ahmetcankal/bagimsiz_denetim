@@ -60,7 +60,7 @@ def azload_excel_data(file_name,sheet_name, method_name):
 
 
 def azsave_k_highest_scores(data_x,data_y, method_name):
-    selector=SelectKBest(score_func=f_classif, k=13)
+    selector=SelectKBest(score_func=mutual_info_classif, k=13)
     model= selector.fit(data_x,data_y)
     selected_feature_names=data_x.columns[model.get_support()]
     scores=model.scores_
