@@ -42,6 +42,41 @@ def stop_timer(initial, method_name):
     print( "Time elapsed for method "+method_name+": " + str(format(end, '.0f'))+ " sec.")
     return end
 
+def azload_excel_data(file_name,sheet_name, method_name):
+    #data = pd.read_excel(file_name,sheet_name=sheet_name) 
+    data = pd.read_csv('data/erdemveri01.csv', sep=";")
+    data_y=data.loc[:,"Y"]
+    data_x=data.loc[:,"CO":"ROIC"]
+    feature_names = list(data_x.columns)
+
+    Selected_feature_names=azsave_k_highest_scores(data_x,data_y, method_name)
+    #data_x = data_x[data_x.columns(Selected_feature_names)]
+    data_x = data_x.loc[:,Selected_feature_names]
+    
+    data_x = data_x.to_numpy()
+    data_y = data_y.to_numpy()
+    
+    return data_x,data_y,Selected_feature_names
+
+
+def azsave_k_highest_scores(data_x,data_y, method_name):
+    selector=SelectKBest(score_func=f_classif, k=13)
+    model= selector.fit(data_x,data_y)
+    selected_feature_names=data_x.columns[model.get_support()]
+    scores=model.scores_
+    zipped=zip(selected_feature_names,scores)
+    zipped=sorted(zipped, key=lambda x: x[1],reverse=True)
+    
+    df = pd.DataFrame(zipped, columns=["variables","score"])
+    create_folder("Results/"+method_name+'/')
+    df.to_csv('Results/'+method_name+'/'+'_tumvariables.csv', index=False)
+    # for feature,score in zipped:
+    #     print(feature,score)
+    selected_feature_names=[]
+    for f,s in zipped:
+        selected_feature_names.append(f)
+
+    return selected_feature_names
 
 def load_excel_data(file_name,sheet_name,k, method_name):
     #data = pd.read_excel(file_name,sheet_name=sheet_name) 
@@ -58,7 +93,7 @@ def load_excel_data(file_name,sheet_name,k, method_name):
 
 
 def save_k_highest_scores(data_x,data_y,_k, method_name):
-    selector=SelectKBest(score_func=mutual_info_classif, k=_k)
+    selector=SelectKBest(score_func=f_classif, k=_k)
     model= selector.fit(data_x,data_y)
     selected_feature_names=data_x.columns[model.get_support()]
     scores=model.scores_
@@ -70,6 +105,9 @@ def save_k_highest_scores(data_x,data_y,_k, method_name):
     df.to_csv('Results/'+method_name+'/'+str(_k)+'_variables.csv', index=False)
     # for feature,score in zipped:
     #     print(feature,score)
+    selected_feature_names=[]
+    for f,s in zipped:
+        selected_feature_names.append(f)
 
     return selected_feature_names
  

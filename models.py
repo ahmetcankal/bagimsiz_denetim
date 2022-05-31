@@ -52,10 +52,20 @@ def normalize_data(data_x, data_y):
 
     return X_train, X_test, y_train, y_test
 
-############ nu support vector Machines ########################
-def support_vector_machine_linear(data_x, data_y, feature_names, k, plotting):
+def aznormalize_data(data_x, data_y):
+    scalerx = MinMaxScaler().fit(data_x)
+    X_std = scalerx.fit_transform(data_x)
+    scalery = MinMaxScaler() 
+    Y_std = data_y.reshape(-1,1)
+    X_train, X_test, y_train, y_test = train_test_split(X_std, Y_std, 
+                                            train_size = 0.80,random_state=0)
 
-    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+    return X_train, X_test, y_train, y_test,X_std,Y_std
+
+############ nu support vector Machines ########################
+def azsupport_vector_machine_linear(data_x, data_y, feature_names, k, plotting):
+
+    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
     svmmodel = svm.SVC(gamma=0.001,  C=param_C_linear, kernel = 'linear') 
     svmodel=svmmodel.fit(X_train, y_train.ravel())
    
@@ -68,9 +78,11 @@ def support_vector_machine_linear(data_x, data_y, feature_names, k, plotting):
 
     return test_score, train_score
 
-def support_vector_machine_poly(data_x, data_y, feature_names, k, plotting):
 
-    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+
+def azsupport_vector_machine_poly(data_x, data_y, feature_names, k, plotting):
+
+    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
 
     lin_reg_model = svm.SVC( C=param_C_poly, degree=3, kernel="poly")
     lin_reg_model.fit(X_train, y_train.ravel())
@@ -83,9 +95,9 @@ def support_vector_machine_poly(data_x, data_y, feature_names, k, plotting):
 
     return test_score, train_score
 
-def support_vector_machine_rbf(data_x, data_y, feature_names, k, plotting):
+def azsupport_vector_machine_rbf(data_x, data_y, feature_names, k, plotting):
 
-    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
 
     lin_reg_model = svm.SVC( C=param_C_rbf, kernel="rbf")
     lin_reg_model.fit(X_train, y_train.ravel())
@@ -98,9 +110,9 @@ def support_vector_machine_rbf(data_x, data_y, feature_names, k, plotting):
 
     return test_score, train_score
 
-def support_vector_machine_sigmoid(data_x, data_y, feature_names, k, plotting):
+def azsupport_vector_machine_sigmoid(data_x, data_y, feature_names, k, plotting):
 
-    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
 
     lin_reg_model = svm.SVC(C=param_C_sigmoid, kernel="sigmoid")
     lin_reg_model.fit(X_train, y_train.ravel())
@@ -115,30 +127,14 @@ def support_vector_machine_sigmoid(data_x, data_y, feature_names, k, plotting):
 
 
 
-################# K Neighbors classifier ##############################
 
-def k_neighbors_class(data_x, data_y, feature_names, k, plotting):
-
-    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
-
-    n_neighbors = 5
-    knr_model = neighbors.KNeighborsClassifier(n_neighbors, weights="distance", algorithm="kd_tree")
-    knr_model.fit(X_train, y_train.ravel())
-    train_score = knr_model.score(X_train, y_train)
-    test_score = knr_model.score(X_test, y_test)
-
-    if plotting:
-        print("- train score:\t"+str(train_score)) 
-        print("- test score:\t"+str(test_score))  
-
-    return test_score, train_score
 
 
     ################# Decision Tree class ##############################
 
-def Decision_Tree_class(data_x, data_y, feature_names, k, plotting):
+def azDecision_Tree_class(data_x, data_y, feature_names, k, plotting):
 
-    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
 
     
     dt_model = DecisionTreeClassifier()
@@ -154,9 +150,9 @@ def Decision_Tree_class(data_x, data_y, feature_names, k, plotting):
 
         ################# random forest class ##############################
 
-def Random_forest(data_x, data_y, feature_names, k, plotting):
+def azRandom_forest(data_x, data_y, feature_names, k, plotting):
 
-    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
 
     
     dt_model = RandomForestClassifier(n_estimators=100,criterion='gini')
@@ -170,6 +166,11 @@ def Random_forest(data_x, data_y, feature_names, k, plotting):
 
     return test_score, train_score
 
+
+
+
+    ### buraya kadar kullanıldı
+
             ################# naive bayes class ##############################
 
 def naivebayes(data_x, data_y, feature_names, k, plotting):
@@ -181,6 +182,24 @@ def naivebayes(data_x, data_y, feature_names, k, plotting):
     dt_model.fit(X_train, y_train.ravel())
     train_score = dt_model.score(X_train, y_train)
     test_score = dt_model.score(X_test, y_test)
+
+    if plotting:
+        print("- train score:\t"+str(train_score)) 
+        print("- test score:\t"+str(test_score))  
+
+    return test_score, train_score
+
+    ################# K Neighbors classifier ##############################
+
+def k_neighbors_class(data_x, data_y, feature_names, k, plotting):
+
+    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
+
+    n_neighbors = 5
+    knr_model = neighbors.KNeighborsClassifier(n_neighbors, weights="distance", algorithm="kd_tree")
+    knr_model.fit(X_train, y_train.ravel())
+    train_score = knr_model.score(X_train, y_train)
+    test_score = knr_model.score(X_test, y_test)
 
     if plotting:
         print("- train score:\t"+str(train_score)) 
