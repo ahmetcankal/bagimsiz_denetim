@@ -20,11 +20,11 @@ cmlist=[]
 ######################## linear support vector machine method #################################
 initial = utils.start_timer()
 results=[]
-
+modelname="svm_linear"
 Xtum, data_y, feature_names = utils.azload_excel_data(
-        'data/data.xlsx', 0,  "linear_svr")
+        'data/data.xlsx', 0,  modelname)
  
-for k in range(3,13,1):
+for k in range(3,14,1):
     data_x=Xtum[:,:k]
     
     yenifeatures=feature_names[0:k]  
@@ -33,20 +33,20 @@ for k in range(3,13,1):
     test,train = models.azsupport_vector_machine_linear(data_x, data_y, 
                                             yenifeatures, k, isPlotting)
     results.append([k,test,train])
-all_results["linear_svr"] = results
-utils.stop_timer(initial, "linear_svr")
-utils.save_results(results, "linear_svr")
-utils.plot_results(results, False, "linear_svr")
+all_results[modelname] = results
+utils.stop_timer(initial, modelname)
+utils.save_results(results, modelname)
+utils.plot_results(results, False, modelname)
 
 
 ######################## rbf support vector machine method #################################
 initial = utils.start_timer()
 results=[]
-
+modelname="svm_rbf"
 Xtum, data_y, feature_names = utils.azload_excel_data(
-        'data/data.xlsx', 0,  "svr_rbf")
- 
-for k in range(3,13,1):
+        'data/data.xlsx', 0,  modelname)
+
+for k in range(3,14,1):
     data_x=Xtum[:,:k]
     
     yenifeatures=feature_names[0:k]  
@@ -55,20 +55,20 @@ for k in range(3,13,1):
     test,train = models.azsupport_vector_machine_rbf(data_x, data_y, 
                                             yenifeatures, k, isPlotting)
     results.append([k,test,train])
-all_results["svr_rbf"] = results
-utils.stop_timer(initial, "svr_rbf")
-utils.save_results(results, "svr_rbf")
-utils.plot_results(results, False, "svr_rbf")
+all_results[modelname] = results
+utils.stop_timer(initial, modelname)
+utils.save_results(results, modelname)
+utils.plot_results(results, False, modelname)
 
 
 ######################## poly support vector machine method #################################
 initial = utils.start_timer()
 results=[]
-
+modelname="svm_poly"
 Xtum, data_y, feature_names = utils.azload_excel_data(
-        'data/data.xlsx', 0,  "svr_poly")
+        'data/data.xlsx', 0,  modelname)
  
-for k in range(3,13,1):
+for k in range(3,14,1):
     data_x=Xtum[:,:k]
     
     yenifeatures=feature_names[0:k]  
@@ -77,20 +77,20 @@ for k in range(3,13,1):
     test,train = models.azsupport_vector_machine_poly(data_x, data_y, 
                                             yenifeatures, k, isPlotting)
     results.append([k,test,train])
-all_results["svr_poly"] = results
-utils.stop_timer(initial, "svr_poly")
-utils.save_results(results, "svr_poly")
-utils.plot_results(results, False, "svr_poly")
+all_results[modelname] = results
+utils.stop_timer(initial, modelname)
+utils.save_results(results, modelname)
+utils.plot_results(results, False, modelname)
 
 
 ######################## dt  #################################
 initial = utils.start_timer()
 results=[]
-
+modelname="Decision Tree"
 Xtum, data_y, feature_names = utils.azload_excel_data(
-        'data/data.xlsx', 0,  "dt")
+        'data/data.xlsx', 0,  modelname)
  
-for k in range(3,13,1):
+for k in range(3,14,1):
     data_x=Xtum[:,:k]
     
     yenifeatures=feature_names[0:k]  
@@ -99,20 +99,20 @@ for k in range(3,13,1):
 
 
     results.append([k,test,train])
-all_results["dt"] = results
-utils.stop_timer(initial, "dt")
-utils.save_results(results, "dt")
-utils.plot_results(results, False, "dt")
+all_results[modelname] = results
+utils.stop_timer(initial, modelname)
+utils.save_results(results, modelname)
+utils.plot_results(results, False, modelname)
 
 
 ######################## random forest  #################################
 initial = utils.start_timer()
 results=[]
-
+modelname="Random Forest"
 Xtum, data_y, feature_names = utils.azload_excel_data(
-        'data/data.xlsx', 0,  "random forest")
+        'data/data.xlsx', 0,  modelname)
  
-for k in range(3,13,1):
+for k in range(3,14,1):
     data_x=Xtum[:,:k]
     
     yenifeatures=feature_names[0:k]  
@@ -121,8 +121,8 @@ for k in range(3,13,1):
 
 
     results.append([k,test,train])
-all_results["random forest"] = results
-utils.stop_timer(initial, "random forest")
-utils.save_results(results, "random forest")
-utils.plot_results(results, False, "random forest")
+all_results[modelname] = results
+utils.stop_timer(initial, modelname)
+utils.save_results(results, modelname)
+utils.plot_results(results, False, modelname)
 

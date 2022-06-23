@@ -69,7 +69,7 @@ def azsave_k_highest_scores(data_x,data_y, method_name):
     
     df = pd.DataFrame(zipped, columns=["variables","score"])
     create_folder("Results/"+method_name+'/')
-    df.to_csv('Results/'+method_name+'/'+'_tumvariables.csv', index=False)
+    df.to_csv('Results/'+method_name+'/'+method_name+'_allvscore.csv', index=False)
     # for feature,score in zipped:
     #     print(feature,score)
     selected_feature_names=[]
@@ -78,38 +78,38 @@ def azsave_k_highest_scores(data_x,data_y, method_name):
 
     return selected_feature_names
 
-def load_excel_data(file_name,sheet_name,k, method_name):
-    #data = pd.read_excel(file_name,sheet_name=sheet_name) 
-    data = pd.read_csv('data/erdemveri01.csv', sep=";")
-    data_y=data.loc[:,"Y"]
-    data_x=data.loc[:,"CO":"ROIC"]
-    feature_names = list(data_x.columns)
-    Selected_feature_names=save_k_highest_scores(data_x,data_y,k, method_name)
-    data_x = data_x[data_x.columns.intersection(Selected_feature_names)]
-    data_x = data_x.to_numpy()
-    data_y = data_y.to_numpy()
+# def load_excel_data(file_name,sheet_name,k, method_name):
+#     #data = pd.read_excel(file_name,sheet_name=sheet_name) 
+#     data = pd.read_csv('data/erdemveri01.csv', sep=";")
+#     data_y=data.loc[:,"Y"]
+#     data_x=data.loc[:,"CO":"ROIC"]
+#     feature_names = list(data_x.columns)
+#     Selected_feature_names=save_k_highest_scores(data_x,data_y,k, method_name)
+#     data_x = data_x[data_x.columns.intersection(Selected_feature_names)]
+#     data_x = data_x.to_numpy()
+#     data_y = data_y.to_numpy()
     
-    return data_x,data_y,feature_names
+#     return data_x,data_y,feature_names
 
 
-def save_k_highest_scores(data_x,data_y,_k, method_name):
-    selector=SelectKBest(score_func=f_classif, k=_k)
-    model= selector.fit(data_x,data_y)
-    selected_feature_names=data_x.columns[model.get_support()]
-    scores=model.scores_
-    zipped=zip(selected_feature_names,scores)
-    zipped=sorted(zipped, key=lambda x: x[1],reverse=True)
+# def save_k_highest_scores(data_x,data_y,_k, method_name):
+#     selector=SelectKBest(score_func=f_classif, k=_k)
+#     model= selector.fit(data_x,data_y)
+#     selected_feature_names=data_x.columns[model.get_support()]
+#     scores=model.scores_
+#     zipped=zip(selected_feature_names,scores)
+#     zipped=sorted(zipped, key=lambda x: x[1],reverse=True)
     
-    df = pd.DataFrame(zipped, columns=["variables","score"])
-    create_folder("Results/"+method_name+'/')
-    df.to_csv('Results/'+method_name+'/'+str(_k)+'_variables.csv', index=False)
-    # for feature,score in zipped:
-    #     print(feature,score)
-    selected_feature_names=[]
-    for f,s in zipped:
-        selected_feature_names.append(f)
+#     df = pd.DataFrame(zipped, columns=["variables","score"])
+#     create_folder("Results/"+method_name+'/')
+#     df.to_csv('Results/'+method_name+'/'+str(_k)+'_variables.csv', index=False)
+#     # for feature,score in zipped:
+#     #     print(feature,score)
+#     selected_feature_names=[]
+#     for f,s in zipped:
+#         selected_feature_names.append(f)
 
-    return selected_feature_names
+#     return selected_feature_names
  
 
 def plot_f_importance(coef, names,_k, method_name):
@@ -156,7 +156,7 @@ def plot_results(results, show_plot, method_name):
     plt.plot(variables, train_results, label='Train')   
     plt.xlabel('Variables')
     plt.ylabel('Score')
-    plt.title("Variable Score Table for "+method_name)
+    plt.title("Variable Accuracy Score Table for "+method_name)
     plt.legend()
 
     fig = plt.gcf()
