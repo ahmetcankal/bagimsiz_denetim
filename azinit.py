@@ -90,7 +90,7 @@ modelname="Decision Tree"
 Xtum, data_y, feature_names = utils.azload_excel_data(
         'data/data.xlsx', 0,  modelname)
  
-for k in range(3,14,1):
+for k in range(1,14,1):
     data_x=Xtum[:,:k]
     
     yenifeatures=feature_names[0:k]  
@@ -112,7 +112,7 @@ modelname="Random Forest"
 Xtum, data_y, feature_names = utils.azload_excel_data(
         'data/data.xlsx', 0,  modelname)
  
-for k in range(3,14,1):
+for k in range(1,14,1):
     data_x=Xtum[:,:k]
     
     yenifeatures=feature_names[0:k]  
