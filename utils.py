@@ -69,7 +69,7 @@ def azsave_k_highest_scores(data_x,data_y, method_name):
     
     df = pd.DataFrame(zipped, columns=["variables","score"])
     create_folder("Results/"+method_name+'/')
-    df.to_csv('Results/'+method_name+'/'+method_name+'_allvscore.csv', index=False)
+    df.to_csv('Results/'+method_name+'_allvscore.csv', index=False)
     # for feature,score in zipped:
     #     print(feature,score)
     selected_feature_names=[]
