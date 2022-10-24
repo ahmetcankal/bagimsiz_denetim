@@ -3,7 +3,7 @@ from pyexpat import model
 import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import KFold, train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, plot_confusion_matrix
 #machine algorithms
@@ -30,7 +30,7 @@ from sklearn import metrics
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import cross_validate
 
-
+scaring={'accuracy','balanced_accuracy','roc_auc','f1','neg_mean_absolute_error','neg_root_mean_squared_error','r2'}
 
 param_C_linear = 10000
 param_C_poly = 100
@@ -65,160 +65,45 @@ def aznormalize_data(data_x, data_y):
 
     return X_train, X_test, y_train, y_test,X_std,Y_std
 
-############ nu support vector Machines ########################
-def azsupport_vector_machine_linear(data_x, data_y, feature_names, k, plotting):
 
+def azmodeluygula(data_x, data_y, feature_names, k, plotting):
+
+    models=[]
+    models.append(('SVML',svm.SVC(gamma=0.001,  C=param_C_linear, kernel = 'linear')))
+    models.append(('SVMP',svm.SVC(C=param_C_poly, degree=3, kernel="poly")))
+    models.append(('SVMRBF',svm.SVC(C=param_C_rbf, kernel="rbf")))
+    models.append(('SVMSig',svm.SVC(C=param_C_sigmoid, kernel="sigmoid")))
+    models.append(('DT',DecisionTreeClassifier()))
+    models.append(('RF',RandomForestClassifier(n_estimators=100,criterion='gini')))
+    models.append(('NB',GaussianNB()))
+    models.append(('KNN',neighbors.KNeighborsClassifier(5, weights="distance", algorithm="kd_tree")))
+
+    #print(models)
     X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
-    svmmodel = svm.SVC(gamma=0.001,  C=param_C_linear, kernel = 'linear') 
-    svmodel=svmmodel.fit(X_train, y_train.ravel())
-   
-    train_score = svmodel.score(X_train, y_train)
-    test_score = svmodel.score(X_test, y_test)
+    results=dict()
+    names=[]
+    table1=[]
+    tabledict=dict()
+    for name,model in models:
+        kfold=KFold(n_splits=10,random_state=7,shuffle=True)
+        cvresults=cross_val_score(model,X_std,Y_std,cv=10,scoring="accuracy")
+        results[name]=(cvresults.mean(),cvresults.std())
+        names.append(name)
+        model=model.fit(X_train,y_train)
+        train_score = model.score(X_train, y_train)
+        test_score = model.score(X_test, y_test)
+        table1.append((name,k,cvresults.mean(),train_score,test_score))
+        tabledict[name]=(name,k,cvresults.mean(),train_score,test_score)
+    print()
+    print("name   results.mean      result.std ")
 
+    #for key,value in results.items():
+    #    print(key,value)
 
-    lin_reg_model = svm.SVC( C=param_C_poly, degree=3, kernel="poly")
-    lin_reg_model.fit(X_train, y_train.ravel())
-    train_score = lin_reg_model.score(X_train, y_train)
-    test_score = lin_reg_model.score(X_test, y_test)
-
-    y_pred=lin_reg_model.predict(X_test)
-    confusion_matrix(y_test,y_pred)
-    plot_confusion_matrix(lin_reg_model,X_test,y_test,cmap=plt.cm.Blues)
-    plt.show()
-    print(classification_report(y_test,y_pred))
-
-
-    if plotting:
-        print("- train score:\t"+str(train_score)) 
-        print("- test score:\t"+str(test_score))  
-
-    return test_score, train_score
-
-
-
-def azsupport_vector_machine_poly(data_x, data_y, feature_names, k, plotting):
-
-    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
-
-    lin_reg_model = svm.SVC( C=param_C_poly, degree=3, kernel="poly")
-    lin_reg_model.fit(X_train, y_train.ravel())
-    train_score = lin_reg_model.score(X_train, y_train)
-    test_score = lin_reg_model.score(X_test, y_test)
-
-    if plotting:
-        print("- train score:\t"+str(train_score)) 
-        print("- test score:\t"+str(test_score))  
-
-    return test_score, train_score
-
-def azsupport_vector_machine_rbf(data_x, data_y, feature_names, k, plotting):
-
-    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
-
-    lin_reg_model = svm.SVC( C=param_C_rbf, kernel="rbf")
-    lin_reg_model.fit(X_train, y_train.ravel())
-    train_score = lin_reg_model.score(X_train, y_train)
-    test_score = lin_reg_model.score(X_test, y_test)
-
-    if plotting:
-        print("- train score:\t"+str(train_score)) 
-        print("- test score:\t"+str(test_score))  
-
-    return test_score, train_score
-
-def azsupport_vector_machine_sigmoid(data_x, data_y, feature_names, k, plotting):
-
-    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
-
-    lin_reg_model = svm.SVC(C=param_C_sigmoid, kernel="sigmoid")
-    lin_reg_model.fit(X_train, y_train.ravel())
-    train_score = lin_reg_model.score(X_train, y_train)
-    test_score = lin_reg_model.score(X_test, y_test)
-
-    if plotting:
-        print("- train score:\t"+str(train_score)) 
-        print("- test score:\t"+str(test_score))  
-
-    return test_score, train_score
-
-
-
-
-
-
-    ################# Decision Tree class ##############################
-
-def azDecision_Tree_class(data_x, data_y, feature_names, k, plotting):
-
-    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
-
+    for sonuc in table1:
+        print(sonuc)
+    for key,value in tabledict.items():
+        print(key,value)
     
-    dt_model = DecisionTreeClassifier()
-    dt_model.fit(X_train, y_train.ravel())
-    train_score = dt_model.score(X_train, y_train)
-    test_score = dt_model.score(X_test, y_test)
+    return test_score, train_score,table1,tabledict
 
-    if plotting:
-        print("- train score:\t"+str(train_score)) 
-        print("- test score:\t"+str(test_score))  
-
-    return test_score, train_score
-
-        ################# random forest class ##############################
-
-def azRandom_forest(data_x, data_y, feature_names, k, plotting):
-
-    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
-
-    
-    dt_model = RandomForestClassifier(n_estimators=100,criterion='gini')
-    dt_model.fit(X_train, y_train.ravel())
-    train_score = dt_model.score(X_train, y_train)
-    test_score = dt_model.score(X_test, y_test)
-
-    if plotting:
-        print("- train score:\t"+str(train_score)) 
-        print("- test score:\t"+str(test_score))  
-
-    return test_score, train_score
-
-
-
-
-    ### buraya kadar kullanıldı
-
-            ################# naive bayes class ##############################
-
-def naivebayes(data_x, data_y, feature_names, k, plotting):
-
-    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
-
-    
-    dt_model = GaussianNB()
-    dt_model.fit(X_train, y_train.ravel())
-    train_score = dt_model.score(X_train, y_train)
-    test_score = dt_model.score(X_test, y_test)
-
-    if plotting:
-        print("- train score:\t"+str(train_score)) 
-        print("- test score:\t"+str(test_score))  
-
-    return test_score, train_score
-
-    ################# K Neighbors classifier ##############################
-
-def k_neighbors_class(data_x, data_y, feature_names, k, plotting):
-
-    X_train, X_test, y_train, y_test = normalize_data(data_x, data_y)
-
-    n_neighbors = 5
-    knr_model = neighbors.KNeighborsClassifier(n_neighbors, weights="distance", algorithm="kd_tree")
-    knr_model.fit(X_train, y_train.ravel())
-    train_score = knr_model.score(X_train, y_train)
-    test_score = knr_model.score(X_test, y_test)
-
-    if plotting:
-        print("- train score:\t"+str(train_score)) 
-        print("- test score:\t"+str(test_score))  
-
-    return test_score, train_score
