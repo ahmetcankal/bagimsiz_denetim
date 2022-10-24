@@ -1,6 +1,7 @@
 
 from pyexpat import model
 import numpy as np
+import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import KFold, train_test_split
@@ -83,6 +84,7 @@ def azmodeluygula(data_x, data_y, feature_names, k, plotting):
     results=dict()
     names=[]
     table1=[]
+    tsutun = ['Model', 'Değişken_sayisi','cv_ort','trainscore','testscore']
     tabledict=dict()
     for name,model in models:
         kfold=KFold(n_splits=10,random_state=7,shuffle=True)
@@ -92,7 +94,7 @@ def azmodeluygula(data_x, data_y, feature_names, k, plotting):
         model=model.fit(X_train,y_train)
         train_score = model.score(X_train, y_train)
         test_score = model.score(X_test, y_test)
-        table1.append((name,k,cvresults.mean(),train_score,test_score))
+        table1.append([name,k,cvresults.mean(),train_score,test_score])
         tabledict[name]=(name,k,cvresults.mean(),train_score,test_score)
     print()
     print("name   results.mean      result.std ")
