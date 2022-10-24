@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, plot_confusion_matrix
 #machine algorithms
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
@@ -26,6 +26,9 @@ from sklearn.datasets import load_digits
 from sklearn.feature_selection import SelectKBest, chi2, f_regression
 from sklearn import neighbors
 from sklearn import metrics
+
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_validate
 
 
 
@@ -71,6 +74,19 @@ def azsupport_vector_machine_linear(data_x, data_y, feature_names, k, plotting):
    
     train_score = svmodel.score(X_train, y_train)
     test_score = svmodel.score(X_test, y_test)
+
+
+    lin_reg_model = svm.SVC( C=param_C_poly, degree=3, kernel="poly")
+    lin_reg_model.fit(X_train, y_train.ravel())
+    train_score = lin_reg_model.score(X_train, y_train)
+    test_score = lin_reg_model.score(X_test, y_test)
+
+    y_pred=lin_reg_model.predict(X_test)
+    confusion_matrix(y_test,y_pred)
+    plot_confusion_matrix(lin_reg_model,X_test,y_test,cmap=plt.cm.Blues)
+    plt.show()
+    print(classification_report(y_test,y_pred))
+
 
     if plotting:
         print("- train score:\t"+str(train_score)) 
