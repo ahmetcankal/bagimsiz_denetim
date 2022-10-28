@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import KFold, train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, plot_confusion_matrix
+from sklearn.metrics import mean_squared_error, plot_confusion_matrix,f1_score,precision_score,accuracy_score
 #machine algorithms
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
@@ -69,6 +69,8 @@ def aznormalize_data(data_x, data_y):
 
 def azmodeluygula(data_x, data_y, feature_names, k, plotting):
 
+    
+
     models=[]
     models.append(('SVML',svm.SVC(gamma=0.001,  C=param_C_linear, kernel = 'linear')))
     models.append(('SVMP',svm.SVC(C=param_C_poly, degree=3, kernel="poly")))
@@ -76,26 +78,32 @@ def azmodeluygula(data_x, data_y, feature_names, k, plotting):
     models.append(('SVMSig',svm.SVC(C=param_C_sigmoid, kernel="sigmoid")))
     models.append(('DT',DecisionTreeClassifier()))
     models.append(('RF',RandomForestClassifier(n_estimators=100,criterion='gini')))
-    models.append(('NB',GaussianNB()))
-    models.append(('KNN',neighbors.KNeighborsClassifier(5, weights="distance", algorithm="kd_tree")))
+    #models.append(('NB',GaussianNB()))
+    #models.append(('KNN',neighbors.KNeighborsClassifier(5, weights="distance", algorithm="kd_tree")))
 
     #print(models)
     X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
+    Y_std=Y_std.ravel()
     results=dict()
     names=[]
     table1=[]
-    tsutun = ['Model', 'Değişken_sayisi','cv_ort','trainscore','testscore']
+    tsutun = ['Model', 'Değişken_sayisi','cv_ort','trainscore','testscore','f1','precision','recall','rocauc']
     tabledict=dict()
     for name,model in models:
         kfold=KFold(n_splits=10,random_state=7,shuffle=True)
-        cvresults=cross_val_score(model,X_std,Y_std,cv=10,scoring="accuracy")
-        results[name]=(cvresults.mean(),cvresults.std())
+        cvresults_acc=cross_val_score(model,X_std,Y_std,cv=10,scoring="accuracy")
+        cvresults_f1=cross_val_score(model,X_std,Y_std,cv=10,scoring="f1_macro")
+        cvresults_preci=cross_val_score(model,X_std,Y_std,cv=10,scoring="precision")
+        cvresults_recall=cross_val_score(model,X_std,Y_std,cv=10,scoring="recall")
+        cvresults_rocauc=cross_val_score(model,X_std,Y_std,cv=10,scoring="roc_auc")
+        results[name]=(cvresults_acc.mean(),cvresults_acc.std(),cvresults_f1.mean(),cvresults_preci.mean(),cvresults_recall.mean(),cvresults_rocauc.mean())
         names.append(name)
+
         model=model.fit(X_train,y_train)
         train_score = model.score(X_train, y_train)
         test_score = model.score(X_test, y_test)
-        table1.append([name,k,cvresults.mean(),train_score,test_score])
-        tabledict[name]=(name,k,cvresults.mean(),train_score,test_score)
+        table1.append([name,k,cvresults_acc.mean(),train_score,test_score,cvresults_f1.mean(),cvresults_preci.mean(),cvresults_recall.mean(),cvresults_rocauc.mean()])
+        tabledict[name]=(name,k,cvresults_acc.mean(),train_score,test_score)
     print()
     print("name   results.mean      result.std ")
 
@@ -109,3 +117,67 @@ def azmodeluygula(data_x, data_y, feature_names, k, plotting):
     
     return test_score, train_score,table1,tabledict
 
+def azgridcv(data_x, data_y, feature_names, k, plotting):
+    model_params={
+        'SVM':{
+            'model':svm.SVC(gamma='auto'),
+            'params':{
+                'C': [1,10,20],
+                'kernel': ['rbf','linear']
+            }
+        },
+        'RF':{
+            'model':RandomForestClassifier(),
+            'params':{
+                'n_estimators':[1,5,10]
+            }
+        }
+
+    }
+    #model paramları bitti
+
+    models=[]
+    models.append(('SVML',svm.SVC(gamma=0.001,  C=param_C_linear, kernel = 'linear')))
+    models.append(('SVMP',svm.SVC(C=param_C_poly, degree=3, kernel="poly")))
+    models.append(('SVMRBF',svm.SVC(C=param_C_rbf, kernel="rbf")))
+    models.append(('SVMSig',svm.SVC(C=param_C_sigmoid, kernel="sigmoid")))
+    models.append(('DT',DecisionTreeClassifier()))
+    models.append(('RF',RandomForestClassifier(n_estimators=100,criterion='gini')))
+    #models.append(('NB',GaussianNB()))
+    #models.append(('KNN',neighbors.KNeighborsClassifier(5, weights="distance", algorithm="kd_tree")))
+
+    #print(models)
+    X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
+    Y_std=Y_std.ravel()
+    results=dict()
+    names=[]
+    table1=[]
+    tsutun = ['Model', 'Değişken_sayisi','cv_ort','trainscore','testscore','f1','precision','recall','rocauc']
+    tabledict=dict()
+    for name,model in models:
+        kfold=KFold(n_splits=10,random_state=7,shuffle=True)
+        cvresults_acc=cross_val_score(model,X_std,Y_std,cv=10,scoring="accuracy")
+        cvresults_f1=cross_val_score(model,X_std,Y_std,cv=10,scoring="f1_macro")
+        cvresults_preci=cross_val_score(model,X_std,Y_std,cv=10,scoring="precision")
+        cvresults_recall=cross_val_score(model,X_std,Y_std,cv=10,scoring="recall")
+        cvresults_rocauc=cross_val_score(model,X_std,Y_std,cv=10,scoring="roc_auc")
+        results[name]=(cvresults_acc.mean(),cvresults_acc.std(),cvresults_f1.mean(),cvresults_preci.mean(),cvresults_recall.mean(),cvresults_rocauc.mean())
+        names.append(name)
+
+        model=model.fit(X_train,y_train)
+        train_score = model.score(X_train, y_train)
+        test_score = model.score(X_test, y_test)
+        table1.append([name,k,cvresults_acc.mean(),train_score,test_score,cvresults_f1.mean(),cvresults_preci.mean(),cvresults_recall.mean(),cvresults_rocauc.mean()])
+        tabledict[name]=(name,k,cvresults_acc.mean(),train_score,test_score)
+    print()
+    print("name   results.mean      result.std ")
+
+    #for key,value in results.items():
+    #    print(key,value)
+
+    for sonuc in table1:
+        print(sonuc)
+    for key,value in tabledict.items():
+        print(key,value)
+        
+    return test_score, train_score,table1,tabledict

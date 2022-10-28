@@ -22,12 +22,12 @@ cmlist=[]
 initial = utils.start_timer()
 results=[]
 resultsd=dict()
-tsutun = ['Model', 'Değişken_sayisi','cv_ort','trainscore','testscore']
+tsutun = ['Model', 'Değişken_sayisi','cv_ort','trainscore','testscore','f1','precision','recall','rocauc']
 modelname="svm_linear"
 Xtum, data_y, feature_names = utils.azload_excel_data(
         'data/data.xlsx', 0,  modelname)
- 
-for k in range(8,14,1):
+#print (Xtum.describe(include='all'))
+for k in range(3,14,1):
     data_x=Xtum[:,:k]
     
     yenifeatures=feature_names[0:k]  
