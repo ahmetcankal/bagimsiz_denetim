@@ -141,7 +141,7 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
     #models.append(('SVMP',svm.SVC(C=param_C_poly, degree=3, kernel="poly")))
     #models.append(('SVMRBF',svm.SVC(C=param_C_rbf, kernel="rbf")))
     #models.append(('SVMSig',svm.SVC(C=param_C_sigmoid, kernel="sigmoid")))
-    metrikler = {"AUC": "roc_auc", "Accuracy": make_scorer(accuracy_score),'Precision':make_scorer(precision_score),'recall':make_scorer(recall_score),'recall':make_scorer(f1_score)}
+    metrikler = {"AUC": "roc_auc", "Accuracy": make_scorer(accuracy_score),'Precision':make_scorer(precision_score),'recall':make_scorer(recall_score),'f1':make_scorer(f1_score)}
     #print(models)
     X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
     Y_std=Y_std.ravel()
@@ -154,25 +154,36 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
     for model_name,mp in model_params.items():
         clf=GridSearchCV(estimator=mp['model'],param_grid=mp['params'],cv=5,scoring=metrikler,return_train_score=True,refit="Accuracy")
         clf.fit(X_train,y_train)
+        i = clf.best_index_
+        best_precision = clf.cv_results_['mean_test_Precision'][i]
+        best_recall = clf.cv_results_['mean_test_recall'][i]   
+        best_f1 = clf.cv_results_['mean_test_f1'][i]
         scores.append({
             'model':model_name,
+            'variable_count':k,
             'best_score':clf.best_score_,
-            'best_params':clf.best_params_
+            'best_params':clf.best_params_,
+            'best_mean_precision':best_precision,
+            'best_mean_recall':best_recall,
+            'best_mean_f1':best_f1
             
         })
-        df1=pd.DataFrame(scores,columns=['model','best_score','best_params'])
-        print(df1)
+        gsresults=pd.DataFrame(scores,columns=['model','variable_count','best_score','best_params','best_mean_precision','best_mean_recall','best_mean_f1'])
+        print(gsresults)
         df2=pd.DataFrame(clf.cv_results_)
         print(df2)
-        df2.to_csv('model1.csv')
+        df2.to_csv(model_name+'model1.csv')
+        gsresults.to_csv('gsresult.csv')
         #df2=df2.sort_values("accuracy")
         predy=clf.predict(X_test)
         print(classification_report(y_test,predy))
-
+           
 
         cvresults_acc=clf.best_score_
+        listresult=gsresults.values.tolist()
 
-    return cvresults_acc
+
+    return listresult
 
 # def duzenlenecek():       
 #         kfold=KFold(n_splits=10,random_state=7,shuffle=True)

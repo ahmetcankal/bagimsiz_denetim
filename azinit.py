@@ -22,7 +22,8 @@ cmlist=[]
 initial = utils.start_timer()
 results=[]
 resultsd=dict()
-tsutun = ['Model', 'Değişken_sayisi','cv_ort','trainscore','testscore','f1','precision','recall','rocauc']
+tsutun1 = ['Model', 'Değişken_sayisi','cv_ort','trainscore','testscore','f1','precision','recall','rocauc']
+gstsutun=['model','variable_count','best_score','best_params','best_mean_precision','best_mean_recall','best_mean_f1']
 modelname="svm_linear"
 Xtum, data_y, feature_names = utils.azload_excel_data(
         'data/data.xlsx', 0,  modelname)
@@ -33,7 +34,7 @@ for k in range(3,14,1):
     yenifeatures=feature_names[0:k]  
     #test,train,result_models,tabledict = models.azmodeluygula(data_x, data_y, 
                                             #yenifeatures, k, isPlotting)
-    test,train,result_models,tabledict = models.azgridcv(data_x, data_y, 
+    result_models = models.azgridcv(data_x, data_y, 
                                             yenifeatures, k, isPlotting)
    # test,train = models.azsupport_vector_machine_linear(data_x, data_y, 
    #                                         yenifeatures, k, isPlotting)
@@ -45,6 +46,10 @@ for k in range(3,14,1):
 #utils.stop_timer(initial, modelname)
 #utils.save_results(results, modelname)
 #utils.plot_results(results, False, modelname)
-df = pd.DataFrame(results,columns=tsutun)
-df.to_csv(r'Results/all_results.csv', index=False)
+
+#df = pd.DataFrame(results,columns=tsutun)
+#df.to_csv(r'Results/all_results.csv', index=False)
+
+gsresults = pd.DataFrame(results)
+gsresults.to_csv(r'Results/gs_results.csv', index=False)
 
