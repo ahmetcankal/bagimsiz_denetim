@@ -31,9 +31,10 @@ for k in range(3,14,1):
     data_x=Xtum[:,:k]
     
     yenifeatures=feature_names[0:k]  
-    test,train,result_models,tabledict = models.azmodeluygula(data_x, data_y, 
+    #test,train,result_models,tabledict = models.azmodeluygula(data_x, data_y, 
+                                            #yenifeatures, k, isPlotting)
+    test,train,result_models,tabledict = models.azgridcv(data_x, data_y, 
                                             yenifeatures, k, isPlotting)
-
    # test,train = models.azsupport_vector_machine_linear(data_x, data_y, 
    #                                         yenifeatures, k, isPlotting)
     #results.append([k,test,train])

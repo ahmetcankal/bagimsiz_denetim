@@ -1,5 +1,6 @@
 
 from pyexpat import model
+from trace import CoverageResults
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -30,6 +31,8 @@ from sklearn import metrics
 
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import cross_validate
+from sklearn.model_selection import GridSearchCV
+
 
 scaring={'accuracy','balanced_accuracy','roc_auc','f1','neg_mean_absolute_error','neg_root_mean_squared_error','r2'}
 
@@ -119,32 +122,24 @@ def azmodeluygula(data_x, data_y, feature_names, k, plotting):
 
 def azgridcv(data_x, data_y, feature_names, k, plotting):
     model_params={
-        'SVM':{
+        'svm':{
             'model':svm.SVC(gamma='auto'),
-            'params':{
-                'C': [1,10,20],
-                'kernel': ['rbf','linear']
-            }
+            'params':{'C': [1,10,20],'kernel': ['rbf','linear'] }
         },
-        'RF':{
+        'random_forest':{ 
             'model':RandomForestClassifier(),
-            'params':{
-                'n_estimators':[1,5,10]
-            }
-        }
+            'params':{'n_estimators':[1,5,10]  }
+         }
 
     }
     #model paramları bitti
 
     models=[]
-    models.append(('SVML',svm.SVC(gamma=0.001,  C=param_C_linear, kernel = 'linear')))
-    models.append(('SVMP',svm.SVC(C=param_C_poly, degree=3, kernel="poly")))
-    models.append(('SVMRBF',svm.SVC(C=param_C_rbf, kernel="rbf")))
-    models.append(('SVMSig',svm.SVC(C=param_C_sigmoid, kernel="sigmoid")))
-    models.append(('DT',DecisionTreeClassifier()))
-    models.append(('RF',RandomForestClassifier(n_estimators=100,criterion='gini')))
-    #models.append(('NB',GaussianNB()))
-    #models.append(('KNN',neighbors.KNeighborsClassifier(5, weights="distance", algorithm="kd_tree")))
+    models.append(('SVM',svm.SVC(gamma='auto')))
+    
+    #models.append(('SVMP',svm.SVC(C=param_C_poly, degree=3, kernel="poly")))
+    #models.append(('SVMRBF',svm.SVC(C=param_C_rbf, kernel="rbf")))
+    #models.append(('SVMSig',svm.SVC(C=param_C_sigmoid, kernel="sigmoid")))
 
     #print(models)
     X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
@@ -154,30 +149,46 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
     table1=[]
     tsutun = ['Model', 'Değişken_sayisi','cv_ort','trainscore','testscore','f1','precision','recall','rocauc']
     tabledict=dict()
-    for name,model in models:
-        kfold=KFold(n_splits=10,random_state=7,shuffle=True)
-        cvresults_acc=cross_val_score(model,X_std,Y_std,cv=10,scoring="accuracy")
-        cvresults_f1=cross_val_score(model,X_std,Y_std,cv=10,scoring="f1_macro")
-        cvresults_preci=cross_val_score(model,X_std,Y_std,cv=10,scoring="precision")
-        cvresults_recall=cross_val_score(model,X_std,Y_std,cv=10,scoring="recall")
-        cvresults_rocauc=cross_val_score(model,X_std,Y_std,cv=10,scoring="roc_auc")
-        results[name]=(cvresults_acc.mean(),cvresults_acc.std(),cvresults_f1.mean(),cvresults_preci.mean(),cvresults_recall.mean(),cvresults_rocauc.mean())
-        names.append(name)
+    scores=[]
+    for model_name,mp in model_params.items():
+        clf=GridSearchCV(estimator=mp['model'],param_grid=mp['params'],cv=5,scoring='accuracy',return_train_score=False)
+        clf.fit(X_train,y_train)
+        scores.append({
+            'model':model_name,
+            'best_score':clf.best_score_,
+            'best_params':clf.best_params_
+        })
+        df=pd.DataFrame(scores,columns=['model','best_score','best_params'])
+        print(df)
 
-        model=model.fit(X_train,y_train)
-        train_score = model.score(X_train, y_train)
-        test_score = model.score(X_test, y_test)
-        table1.append([name,k,cvresults_acc.mean(),train_score,test_score,cvresults_f1.mean(),cvresults_preci.mean(),cvresults_recall.mean(),cvresults_rocauc.mean()])
-        tabledict[name]=(name,k,cvresults_acc.mean(),train_score,test_score)
-    print()
-    print("name   results.mean      result.std ")
+        cvresults_acc=clf.best_score_
 
-    #for key,value in results.items():
-    #    print(key,value)
+    return cvresults_acc
 
-    for sonuc in table1:
-        print(sonuc)
-    for key,value in tabledict.items():
-        print(key,value)
+# def duzenlenecek():       
+#         kfold=KFold(n_splits=10,random_state=7,shuffle=True)
+#         cvresults_acc=cross_val_score(model,X_std,Y_std,cv=10,scoring="accuracy")
+#         cvresults_f1=cross_val_score(model,X_std,Y_std,cv=10,scoring="f1_macro")
+#         cvresults_preci=cross_val_score(model,X_std,Y_std,cv=10,scoring="precision")
+#         cvresults_recall=cross_val_score(model,X_std,Y_std,cv=10,scoring="recall")
+#         cvresults_rocauc=cross_val_score(model,X_std,Y_std,cv=10,scoring="roc_auc")
+#         results[name]=(cvresults_acc.mean(),cvresults_acc.std(),cvresults_f1.mean(),cvresults_preci.mean(),cvresults_recall.mean(),cvresults_rocauc.mean())
+#         names.append(name)
+
+#         model=model.fit(X_train,y_train)
+#         train_score = model.score(X_train, y_train)
+#         test_score = model.score(X_test, y_test)
+#         table1.append([name,k,cvresults_acc.mean(),train_score,test_score,cvresults_f1.mean(),cvresults_preci.mean(),cvresults_recall.mean(),cvresults_rocauc.mean()])
+#         tabledict[name]=(name,k,cvresults_acc.mean(),train_score,test_score)
+#     print()
+#     print("name   results.mean      result.std ")
+
+#     #for key,value in results.items():
+#     #    print(key,value)
+
+#     for sonuc in table1:
+#         print(sonuc)
+#     for key,value in tabledict.items():
+#         print(key,value)
         
-    return test_score, train_score,table1,tabledict
+# return cvresults
