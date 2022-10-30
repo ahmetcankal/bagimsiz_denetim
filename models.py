@@ -152,7 +152,7 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
     tabledict=dict()
     scores=[]
     for model_name,mp in model_params.items():
-        clf=GridSearchCV(estimator=mp['model'],param_grid=mp['params'],cv=5,scoring=metrikler,return_train_score=True,refit="Accuracy",,n_jobs= -1, verbose= 2 )
+        clf=GridSearchCV(estimator=mp['model'],param_grid=mp['params'],cv=5,scoring=metrikler,return_train_score=True,refit="Accuracy",n_jobs= -1, verbose= 2 )
         clf.fit(X_train,y_train)
         i = clf.best_index_
         best_precision = clf.cv_results_['mean_test_Precision'][i]
