@@ -7,7 +7,8 @@ from matplotlib import pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import KFold, train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, plot_confusion_matrix,f1_score,precision_score,accuracy_score
+from sklearn.metrics import mean_squared_error, plot_confusion_matrix,f1_score,precision_score,accuracy_score,recall_score
+from sklearn.metrics import make_scorer
 #machine algorithms
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
@@ -124,7 +125,7 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
     model_params={
         'svm':{
             'model':svm.SVC(gamma='auto'),
-            'params':{'C': [1,10,20],'kernel': ['rbf','linear'] }
+            'params':{'C': [0.1,1,5,10,15,20,100,1000],'kernel': ['rbf','linear','poly','sigmoid'],'degree':[3,8] }
         },
         'random_forest':{ 
             'model':RandomForestClassifier(),
@@ -140,7 +141,7 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
     #models.append(('SVMP',svm.SVC(C=param_C_poly, degree=3, kernel="poly")))
     #models.append(('SVMRBF',svm.SVC(C=param_C_rbf, kernel="rbf")))
     #models.append(('SVMSig',svm.SVC(C=param_C_sigmoid, kernel="sigmoid")))
-
+    metrikler = {"AUC": "roc_auc", "Accuracy": make_scorer(accuracy_score),'Precision':make_scorer(precision_score),'recall':make_scorer(recall_score),'recall':make_scorer(f1_score)}
     #print(models)
     X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
     Y_std=Y_std.ravel()
@@ -151,15 +152,23 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
     tabledict=dict()
     scores=[]
     for model_name,mp in model_params.items():
-        clf=GridSearchCV(estimator=mp['model'],param_grid=mp['params'],cv=5,scoring='accuracy',return_train_score=False)
+        clf=GridSearchCV(estimator=mp['model'],param_grid=mp['params'],cv=5,scoring=metrikler,return_train_score=True,refit="Accuracy")
         clf.fit(X_train,y_train)
         scores.append({
             'model':model_name,
             'best_score':clf.best_score_,
             'best_params':clf.best_params_
+            
         })
-        df=pd.DataFrame(scores,columns=['model','best_score','best_params'])
-        print(df)
+        df1=pd.DataFrame(scores,columns=['model','best_score','best_params'])
+        print(df1)
+        df2=pd.DataFrame(clf.cv_results_)
+        print(df2)
+        df2.to_csv('model1.csv')
+        #df2=df2.sort_values("accuracy")
+        predy=clf.predict(X_test)
+        print(classification_report(y_test,predy))
+
 
         cvresults_acc=clf.best_score_
 
