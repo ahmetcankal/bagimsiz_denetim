@@ -129,7 +129,7 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
         },
         'random_forest':{ 
             'model':RandomForestClassifier(),
-            'params':{'n_estimators':[1,5,10]  }
+            'params':{'n_estimators':[1,5,10,50,100] ,'max_depth':[4,5,6,7,8,9,10],'min_samples_leaf':[2,10,20],'min_samples_split':[10,15,20],'criterion':["gini","entropy"],'max_features':['auto', 'sqrt'] }
          }
 
     }
@@ -152,7 +152,7 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
     tabledict=dict()
     scores=[]
     for model_name,mp in model_params.items():
-        clf=GridSearchCV(estimator=mp['model'],param_grid=mp['params'],cv=5,scoring=metrikler,return_train_score=True,refit="Accuracy")
+        clf=GridSearchCV(estimator=mp['model'],param_grid=mp['params'],cv=5,scoring=metrikler,return_train_score=True,refit="Accuracy",,n_jobs= -1, verbose= 2 )
         clf.fit(X_train,y_train)
         i = clf.best_index_
         best_precision = clf.cv_results_['mean_test_Precision'][i]
