@@ -23,7 +23,7 @@ initial = utils.start_timer()
 results=[]
 resultsd=dict()
 tsutun1 = ['Model', 'Değişken_sayisi','cv_ort','trainscore','testscore','f1','precision','recall','rocauc']
-gstsutun=['model','variable_count','best_score','best_params','best_mean_precision','best_mean_recall','best_mean_f1']
+gstsutun=['model','variable_count','best_mean_score_accuracy','best_params','best_mean_precision','best_mean_recall','best_mean_f1']
 modelname="svm_linear"
 Xtum, data_y, feature_names = utils.azload_excel_data(
         'data/data.xlsx', 0,  modelname)

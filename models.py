@@ -130,7 +130,14 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
         'random_forest':{ 
             'model':RandomForestClassifier(),
             'params':{'n_estimators':[1,5,10,50,100] ,'max_depth':[4,5,6,7,8,9,10],'min_samples_leaf':[2,10,20],'min_samples_split':[10,15,20],'criterion':["gini","entropy"],'max_features':['auto', 'sqrt'] }
+         },
+         'DT':{
+            'model':DecisionTreeClassifier(),
+            'params':{'max_leaf_nodes': list(range(2, 100)),'min_samples_leaf': range(1,5),'min_samples_split': [2, 3, 4],'criterion':['gini', 'entropy'], 'max_depth':[2,3,4,5,6,7,8,9,10,11,12],'max_features': ['auto', 'sqrt', 'log2']
+            }
+
          }
+
 
     }
     #model paramları bitti
@@ -153,22 +160,37 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
     scores=[]
     for model_name,mp in model_params.items():
         clf=GridSearchCV(estimator=mp['model'],param_grid=mp['params'],cv=5,scoring=metrikler,return_train_score=True,refit="Accuracy",n_jobs= -1, verbose= 2 )
-        clf.fit(X_train,y_train)
+        #train verisi 
+        #clf.fit(X_train,y_train)
+        #clf_predicted=clf.predict(X_test)
+        #confusion_matrix(y_test,clf_predicted)       
+
+
+
+        #tüm veri için
+        clf.fit(X_std,Y_std)
+
+
+
+
         i = clf.best_index_
-        best_precision = clf.cv_results_['mean_test_Precision'][i]
-        best_recall = clf.cv_results_['mean_test_recall'][i]   
-        best_f1 = clf.cv_results_['mean_test_f1'][i]
+        mean_precision = clf.cv_results_['mean_test_Precision'][i]
+        mean_recall = clf.cv_results_['mean_test_recall'][i]   
+        mean_f1 = clf.cv_results_['mean_test_f1'][i]
+        
+
+        
         scores.append({
             'model':model_name,
             'variable_count':k,
-            'best_score':clf.best_score_,
+            'best_mean_score_accuracy':clf.best_score_,
             'best_params':clf.best_params_,
-            'best_mean_precision':best_precision,
-            'best_mean_recall':best_recall,
-            'best_mean_f1':best_f1
+            'best_mean_precision':mean_precision,
+            'best_mean_recall':mean_recall,
+            'best_mean_f1':mean_f1
             
         })
-        gsresults=pd.DataFrame(scores,columns=['model','variable_count','best_score','best_params','best_mean_precision','best_mean_recall','best_mean_f1'])
+        gsresults=pd.DataFrame(scores,columns=['model','variable_count','best_mean_score_accuracy','best_params','best_mean_precision','best_mean_recall','best_mean_f1'])
         print(gsresults)
         df2=pd.DataFrame(clf.cv_results_)
         print(df2)
