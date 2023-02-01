@@ -1,0 +1,4 @@
+,model,variable_count,test_accuracy,test_params,test_precision,test_recall,test_f1,test_auc
+0,svm,4,0.61,"{'C': 1000, 'degree': 3, 'kernel': 'poly'}",0.62,0.97,0.76,0.48
+1,random_forest,4,0.71,"{'criterion': 'gini', 'max_depth': 8, 'max_features': 'sqrt', 'min_samples_leaf': 10, 'min_samples_split': 10, 'n_estimators': 100}",0.71,0.92,0.8,0.63
+2,DT,4,0.66,"{'criterion': 'entropy', 'max_depth': 6, 'max_features': 'log2', 'min_samples_leaf': 3, 'min_samples_split': 4}",0.66,0.97,0.78,0.55

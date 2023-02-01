@@ -1,0 +1,2 @@
+,model,variable_count,test_accuracy,test_params,test_precision,test_recall,test_f1,test_auc
+0,svm,13,0.694737,"{'C': 100, 'degree': 3, 'kernel': 'linear'}",0.701299,0.9,0.788321,0.621429

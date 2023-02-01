@@ -1,0 +1,23 @@
+Fitting 5 folds for each of 7200 candidates, totalling 36000 fits
+[Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
+[Parallel(n_jobs=1)]: Done 36000 out of 36000 | elapsed:   36.2s finished
+GridSearchCV(cv=5, estimator=DecisionTreeClassifier(),
+             param_grid={'criterion': ['gini', 'entropy'],
+                         'max_depth': [2, 3, 5, 10, 17],
+                         'max_features': ['log2', 'sqrt', 'auto'],
+                         'min_samples_leaf': [1, 5, 8, 11],
+                         'min_samples_split': [2, 3, 5, 7, 9],
+                         'random_state': [0, 1, 2, 3, 4, 5],
+                         'splitter': ['best', 'random']},
+             scoring='accuracy', verbose=1)
+
+
+
+
+DecisionTreeClassifier(max_depth=5, max_features='log2', min_samples_split=7, random_state=3)
+
+grid_search_dt.fit(x_train, y_train)
+
+print(grid_search_dt.score(x_test, y_test))
+
+DecisionTreeClassifier(max_depth=5, max_features='log2', min_samples_split=7, random_state=3)

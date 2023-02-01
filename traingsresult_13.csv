@@ -1,0 +1,2 @@
+,model,variable_count,best_mean_score_accuracy,best_params,best_mean_precision,best_mean_recall,best_mean_f1
+0,svm,13,0.6808421052631578,"{'C': 100, 'degree': 3, 'kernel': 'linear'}",0.6799526152724622,0.8711111111111111,0.7631952159989543

@@ -21,6 +21,7 @@ cmlist=[]
 ######################## linear support vector machine method #################################
 initial = utils.start_timer()
 results=[]
+testresults=[]
 resultsd=dict()
 tsutun1 = ['Model', 'Değişken_sayisi','cv_ort','trainscore','testscore','f1','precision','recall','rocauc']
 gstsutun=['model','variable_count','best_mean_score_accuracy','best_params','best_mean_precision','best_mean_recall','best_mean_f1']
@@ -34,13 +35,14 @@ for k in range(3,14,1):
     yenifeatures=feature_names[0:k]  
     #test,train,result_models,tabledict = models.azmodeluygula(data_x, data_y, 
                                             #yenifeatures, k, isPlotting)
-    result_models = models.azgridcv(data_x, data_y, 
+    result_models,test_models = models.azgridcv(data_x, data_y, 
                                             yenifeatures, k, isPlotting)
    # test,train = models.azsupport_vector_machine_linear(data_x, data_y, 
    #                                         yenifeatures, k, isPlotting)
     #results.append([k,test,train])
     #results.append(result_models)
     results.extend(result_models)
+    testresults.extend(test_models)
    
 #all_results[modelname] = results
 #utils.stop_timer(initial, modelname)
@@ -51,5 +53,8 @@ for k in range(3,14,1):
 #df.to_csv(r'Results/all_results.csv', index=False)
 
 gsresults = pd.DataFrame(results)
-gsresults.to_csv(r'Results/gs_results.csv', index=False)
+gsresults.to_csv(r'Results/traings_results.csv', index=False)
+
+testresults = pd.DataFrame(testresults)
+testresults.to_csv(r'Results/testgs_results.csv', index=False)
 

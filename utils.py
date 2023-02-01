@@ -48,6 +48,20 @@ def azload_excel_data(file_name,sheet_name, method_name):
     data_y=data.loc[:,"Y"]
     data_x=data.loc[:,"CO":"ROIC"]
     feature_names = list(data_x.columns)
+    #tanımlayıı istatistikler
+    df = pd.DataFrame(data_x)
+    #print(df)
+    #stats_numeric = df['CO'].describe()
+    #print(stats_numeric)
+    stats = df.describe(include='all')
+    
+    print(stats)
+    
+    #stats.to_csv(r'Results/descriptive_stats.csv', index=False)
+    stats.to_excel(r'Results\Descriptive_stats.xlsx', index=False)
+
+    #df.describe(include='all')
+
 
     Selected_feature_names=azsave_k_highest_scores(data_x,data_y, method_name)
     #data_x = data_x[data_x.columns(Selected_feature_names)]
