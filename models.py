@@ -130,17 +130,17 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
             'model':svm.SVC(gamma='auto'),
             'params':{'C': [0.1,1,5,10,15,20,100,1000],'kernel': ['rbf','linear','poly','sigmoid'],'degree':[3,8] }
         }
-        # ,
-        # 'random_forest':{ 
-        #     'model':RandomForestClassifier(),
-        #     'params':{'n_estimators':[1,5,10,50,100] ,'max_depth':[4,5,6,7,8,9,10],'min_samples_leaf':[2,10,20],'min_samples_split':[10,15,20],'criterion':["gini","entropy"],'max_features':['auto', 'sqrt'] }
-        #  },
-        #  'DT':{
-        #     'model':DecisionTreeClassifier(),
-        #     'params':{'min_samples_leaf': range(1,4),'min_samples_split': [2, 3, 4],'criterion':['gini', 'entropy'], 'max_depth':[2,4,6,8,10,12],'max_features': ['auto', 'sqrt', 'log2']
-        #     }
+        ,
+        'random_forest':{ 
+            'model':RandomForestClassifier(),
+            'params':{'n_estimators':[1,5,10,50,100] ,'max_depth':[4,5,6,7,8,9,10],'min_samples_leaf':[2,10,20],'min_samples_split':[10,15,20],'criterion':["gini","entropy"],'max_features':['auto', 'sqrt'] }
+         },
+         'DT':{
+            'model':DecisionTreeClassifier(),
+            'params':{'min_samples_leaf': range(1,4),'min_samples_split': [2, 3, 4],'criterion':['gini', 'entropy'], 'max_depth':[2,4,6,8,10,12],'max_features': ['auto', 'sqrt', 'log2']
+            }
 
-        #  }
+         }
 #DT   leafnodelistrange=100 , samples range=5 maxdepth=,4,5,6,7,8,9,10,11,12 ekle
 #rf estimator=1,5,10,50,100 depth =4,5,6,7,8,9,10
 #svm C=0.1,1,5,10,15,20,100,

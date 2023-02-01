@@ -1,2 +1,0 @@
-,model,variable_count,test_accuracy,test_params,test_precision,test_recall,test_f1,test_auc
-0,svm,11,0.673684,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.710145,0.816667,0.75969,0.622619
