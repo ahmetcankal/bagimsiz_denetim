@@ -205,7 +205,7 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
         test_recall = round(recall_score(y_test, clf_predicted), 6)
         test_f1 = round(f1_score(y_test, clf_predicted), 6)
         test_roc_auc = round(roc_auc_score(y_test, clf_predicted), 6)
-        test_kappa = round(cohen_kappa_score(y_test, clf_predicted,6))
+        test_kappa = round(cohen_kappa_score(y_test, clf_predicted),6)
         testscores.append(
             {
             'model':model_name,
