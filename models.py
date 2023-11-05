@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import KFold, train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, plot_confusion_matrix,f1_score,precision_score,accuracy_score,recall_score,roc_auc_score,cohen_kappa_score
+from sklearn.metrics import mean_squared_error, ConfusionMatrixDisplay,f1_score,precision_score,accuracy_score,recall_score,roc_auc_score,cohen_kappa_score
 from sklearn.metrics import make_scorer
 #machine algorithms
 from sklearn import svm

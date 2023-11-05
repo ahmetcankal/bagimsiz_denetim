@@ -1,0 +1,4 @@
+,model,variable_count,best_mean_score_accuracy,best_params,best_mean_precision,best_mean_recall,best_mean_f1
+0,svm,12,0.6834736842105263,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.6830823794191755,0.8711111111111111,0.7652731160966564
+1,random_forest,12,0.7256491228070175,"{'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 10, 'n_estimators': 50}",0.7320395508630803,0.8488888888888889,0.7859683377453317
+2,DT,12,0.6887719298245615,"{'criterion': 'entropy', 'max_depth': 12, 'max_features': 'sqrt', 'min_samples_leaf': 3, 'min_samples_split': 2}",0.7408599514076186,0.7466666666666667,0.7390752785881678

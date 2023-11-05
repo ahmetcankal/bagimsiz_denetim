@@ -21,7 +21,7 @@ cmlist=[]
 initial = utils.start_timer()
 results=[]
 for k in range(3,13,1):
-    data_x, data_y, feature_names = utils.load_excel_data(
+    data_x, data_y, feature_names = utils.azload_excel_data(
         'data/data.xlsx', 0, k, "linear_svr")
     test,train = models.support_vector_machine_linear(data_x, data_y, 
                                             feature_names, k, isPlotting)

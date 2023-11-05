@@ -1,0 +1,4 @@
+,model,variable_count,test_accuracy,test_params,test_precision,test_recall,test_f1,test_auc
+0,svm,11,0.673684,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.710145,0.816667,0.75969,0.622619
+1,random_forest,11,0.789474,"{'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 10, 'n_estimators': 100}",0.794118,0.9,0.84375,0.75
+2,DT,11,0.747368,"{'criterion': 'gini', 'max_depth': 12, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 3}",0.8,0.8,0.8,0.728571

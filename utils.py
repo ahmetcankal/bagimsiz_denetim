@@ -17,8 +17,11 @@ import os, time, cmath, math
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt 
-from sklearn.feature_selection import SelectKBest, chi2, f_regression,mutual_info_classif,f_classif
-
+import colorcet as cc
+from sklearn.feature_selection import SelectKBest, chi2, f_regression,mutual_info_classif,f_classif,RFE
+import seaborn as sns
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 
 acclist=[]
 auclist=[]
@@ -62,8 +65,12 @@ def azload_excel_data(file_name,sheet_name, method_name):
 
     #df.describe(include='all')
 
+    #öznitelik seçim yöntemleri fonksiyonları
 
     Selected_feature_names=azsave_k_highest_scores(data_x,data_y, method_name)
+    #Selected_feature_names=azfeatimportance_ANOVA(data_x,data_y)
+    #Selected_feature_names=azfeatimportance_RFE(data_x,data_y)
+
     #data_x = data_x[data_x.columns(Selected_feature_names)]
     data_x = data_x.loc[:,Selected_feature_names]
     
@@ -72,7 +79,39 @@ def azload_excel_data(file_name,sheet_name, method_name):
     
     return data_x,data_y,Selected_feature_names
 
+def azfeatimportance_ANOVA (data_x,data_y):
+    best_features = SelectKBest(score_func=f_classif, k=13).fit(data_x, data_y)
+    #best_features=mutual_info_classif(data_x,data_y)
+    scores = best_features.scores_
+    selected_features = data_x.columns[best_features.get_support()]
+    palette = sns.color_palette(cc.glasbey, n_colors=25)
 
+    sorted_idxs = np.argsort(scores)[::-1]
+    sorted_scores = scores[sorted_idxs]
+    sorted_feature_names = np.array(data_x.columns)[sorted_idxs]
+
+    plt.figure(figsize=(12, 6))
+    sns.barplot(x=sorted_scores, y=sorted_feature_names,palette=palette)
+    plt.xlabel('Scores')
+    plt.ylabel('Features')
+    plt.title('Feature Importances mutual_info_classif')
+    plt.show()
+    
+    return best_features
+
+def azfeatimportance_RFE (data_x,data_y):
+    
+    rfe=RFE(estimator=DecisionTreeClassifier(),n_features_to_select=5)
+    rfe.fit(data_x,data_y)
+    #best_features=mutual_info_classif(data_x,data_y)
+    for i,col in zip(range(data_x.shape[1]),data_x.columns):
+        print(f"{col} selected={rfe.support_[i]} rank={rfe.ranking_[i]}")
+    
+    
+    best_features=[]
+    
+    
+    return best_features
 def azsave_k_highest_scores(data_x,data_y, method_name):
     selector=SelectKBest(score_func=mutual_info_classif, k=13)
     model= selector.fit(data_x,data_y)
