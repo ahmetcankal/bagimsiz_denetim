@@ -154,7 +154,7 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
     #models.append(('SVMP',svm.SVC(C=param_C_poly, degree=3, kernel="poly")))
     #models.append(('SVMRBF',svm.SVC(C=param_C_rbf, kernel="rbf")))
     #models.append(('SVMSig',svm.SVC(C=param_C_sigmoid, kernel="sigmoid")))
-    metrikler = {"AUC": "roc_auc", "Accuracy": make_scorer(accuracy_score),'Precision':make_scorer(precision_score),'recall':make_scorer(recall_score),'f1':make_scorer(f1_score)}
+    metrikler = { "Accuracy": make_scorer(accuracy_score),'Precision':make_scorer(precision_score),'recall':make_scorer(recall_score),'f1':make_scorer(f1_score)}
     #print(models)
     X_train, X_test, y_train, y_test,X_std,Y_std = aznormalize_data(data_x, data_y)
     Y_std = Y_std.ravel()
@@ -174,12 +174,20 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
         train_accuracy = clf.score(X_train,y_train)
         #clf.decision_function()
         #clf.get_params()
-        
+        print(modelim.best_params_)
+       # cmtrain = confusion_matrix(X_train,y_train)   
         #scores.append (clf.score(X_train,y_train))
-        clf_predicted = clf.predict(X_test)
-        cm = confusion_matrix(y_test,clf_predicted)       
-        #scores.append(clf.score(X_test,y_test))
-        #sns.heatmap(cm,annot=True,cmap='viridis')
+        clf_testpredicted = clf.predict(X_test)
+        
+        #train verileri modele veriliyor
+        clf_trainpredicted=clf.predict(X_train)
+       
+        cm = confusion_matrix(y_test,clf_testpredicted)       
+        cmtrain=confusion_matrix(y_train,clf_trainpredicted)
+
+
+
+
 
 
         
@@ -187,25 +195,34 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
         #clf.fit(X_std,Y_std)
 
         # test model verileri alttaki gibi alınıp diziye aktarılabilir.
-        print(classification_report(y_test,clf_predicted))
-        print(f"Accuracy: {round(accuracy_score(y_test, clf_predicted), 2)}")
-        print(f"Precision: {round(precision_score(y_test, clf_predicted), 2)}")
-        print(f"Recall: {round(recall_score(y_test, clf_predicted), 2)}")
-        print(f"F1_score: {round(f1_score(y_test, clf_predicted), 2)}")
+        print(classification_report(y_test,clf_testpredicted))
 
-        #train değerleri
-        i = clf.best_index_
-        mean_precision = clf.cv_results_['mean_test_Precision'][i]
-        mean_recall = clf.cv_results_['mean_test_recall'][i]   
-        mean_f1 = clf.cv_results_['mean_test_f1'][i]
+        print(classification_report(y_train,clf_trainpredicted))
+
+        # print(f"Accuracy: {round(accuracy_score(y_test, clf_testpredicted), 2)}")
+        # print(f"Precision: {round(precision_score(y_test, clf_testpredicted,average='weighted'), 2)}")
+        # print(f"Recall: {round(recall_score(y_test, clf_testpredicted,average='weighted'), 2)}")
+        # print(f"F1_score: {round(f1_score(y_test, clf_testpredicted,average='weighted'), 2)}")
+
+
+
         
        #test değerleri
-        test_accuracy = round(accuracy_score(y_test, clf_predicted), 6)
-        test_precision = round(precision_score(y_test, clf_predicted), 6)
-        test_recall = round(recall_score(y_test, clf_predicted), 6)
-        test_f1 = round(f1_score(y_test, clf_predicted), 6)
-        test_roc_auc = round(roc_auc_score(y_test, clf_predicted), 6)
-        test_kappa = round(cohen_kappa_score(y_test, clf_predicted),6)
+
+        
+
+
+        test_accuracy = round(accuracy_score(y_test, clf_testpredicted), 6)
+        # test_precision = round(precision_score(y_test, clf_testpredicted,average='weighted'), 6)
+        # test_recall = round(recall_score(y_test, clf_testpredicted,average='weighted'), 6)
+        # test_f1 = round(f1_score(y_test, clf_testpredicted,average='weighted'), 6)
+        test_precision,test_recall, test_f1, support_ = metrics.precision_recall_fscore_support(y_test, clf_testpredicted, average='weighted')
+
+        #test_roc_auc = round(roc_auc_score(y_test, clf_testpredicted,average='weighted'), 6)
+        test_kappa = round(cohen_kappa_score(y_test, clf_testpredicted),6)
+
+
+
         testscores.append(
             {
             'model':model_name,
@@ -215,8 +232,7 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
             'test_precision':test_precision,
             'test_recall':test_recall,
             'test_f1':test_f1,
-            'test_auc':test_roc_auc
-           
+            'test_auc':test_accuracy          
         })
 
         testgsresults=pd.DataFrame(testscores,columns=['model','variable_count','test_accuracy','test_params','test_precision','test_recall','test_f1','test_auc'])
@@ -224,17 +240,35 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
         testgsresults.to_csv('testgsresult_'+str(k)+'.csv')
 
 
+
+                #train değerleri
+        i = clf.best_index_
+        mean_precision = clf.cv_results_['mean_test_Precision'][i]
+        mean_recall = clf.cv_results_['mean_test_recall'][i]   
+        mean_f1 = clf.cv_results_['mean_test_f1'][i]
+
+
+        train_accuracy = round(accuracy_score(y_train, clf_trainpredicted), 6)
+        
+        
+        train_precision,train_recall, train_f1, support_ = metrics.precision_recall_fscore_support(y_train, clf_trainpredicted, average='weighted')
+
+        #train_roc_auc = round(roc_auc_score(y_train, clf_trainpredicted,average='weighted'), 6)
+        train_kappa = round(cohen_kappa_score(y_train, clf_trainpredicted),6)
+
+        #train score değerleri  düzenlendi elde edildi
         scores.append({
             'model':model_name,
             'variable_count':k,
-            'best_mean_score_accuracy':clf.best_score_,
+            'train_accuracy':train_accuracy,
             'best_params':clf.best_params_,
-            'best_mean_precision':mean_precision,
-            'best_mean_recall':mean_recall,
-            'best_mean_f1':mean_f1
+            'train_precision':train_precision,
+            'train_recall':train_recall,
+            'train_f1':train_f1,
+            'train_auc':train_accuracy
             
         })
-        gsresults=pd.DataFrame(scores,columns=['model','variable_count','best_mean_score_accuracy','best_params','best_mean_precision','best_mean_recall','best_mean_f1'])
+        gsresults=pd.DataFrame(scores,columns=['model','variable_count','train_accuracy','best_params','train_precision','train_recall','train_f1','train_roc_auc'])
 
         print(gsresults)
         df2=pd.DataFrame(clf.cv_results_)
@@ -244,8 +278,8 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
         #df2=df2.sort_values("accuracy")
         
 
-        #clf_predicted=clf.predict(X_test)
-        #confusion_matrix(y_test,clf_predicted)  
+        #clf_testpredicted=clf.predict(X_test)
+        #confusion_matrix(y_test,clf_testpredicted)  
 
 
         #predy=clf.predict(X_test)

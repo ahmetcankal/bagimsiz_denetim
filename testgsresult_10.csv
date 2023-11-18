@@ -1,4 +1,4 @@
 ,model,variable_count,test_accuracy,test_params,test_precision,test_recall,test_f1,test_auc
-0,svm,10,0.736842,"{'C': 10, 'degree': 3, 'kernel': 'linear'}",0.716049,0.966667,0.822695,0.654762
-1,random_forest,10,0.715789,"{'criterion': 'entropy', 'max_depth': 8, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 10, 'n_estimators': 10}",0.770492,0.783333,0.77686,0.691667
-2,DT,10,0.726316,"{'criterion': 'entropy', 'max_depth': 8, 'max_features': 'sqrt', 'min_samples_leaf': 3, 'min_samples_split': 4}",0.783333,0.783333,0.783333,0.705952
+0,svm,10,0.694737,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.6843865516634396,0.6947368421052632,0.6828661436282282,0.694737
+1,random_forest,10,0.810526,"{'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 15, 'n_estimators': 100}",0.8089424187427817,0.8105263157894737,0.806156015037594,0.810526
+2,DT,10,0.726316,"{'criterion': 'gini', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 3}",0.7342394447657605,0.7263157894736842,0.7289939667435129,0.726316
