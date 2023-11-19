@@ -218,10 +218,9 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
         # test_f1 = round(f1_score(y_test, clf_testpredicted,average='weighted'), 6)
         test_precision,test_recall, test_f1, support_ = metrics.precision_recall_fscore_support(y_test, clf_testpredicted, average='weighted')
 
-        #test_roc_auc = round(roc_auc_score(y_test, clf_testpredicted,average='weighted'), 6)
+        test_roc_auc = round(roc_auc_score(y_test, clf_testpredicted,average='weighted'), 6)
         test_kappa = round(cohen_kappa_score(y_test, clf_testpredicted),6)
-
-
+       
 
         testscores.append(
             {
@@ -232,10 +231,11 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
             'test_precision':test_precision,
             'test_recall':test_recall,
             'test_f1':test_f1,
-            'test_auc':test_accuracy          
+            'test_roc_auc':test_roc_auc,
+            'test_kappa':test_kappa          
         })
 
-        testgsresults=pd.DataFrame(testscores,columns=['model','variable_count','test_accuracy','test_params','test_precision','test_recall','test_f1','test_auc'])
+        testgsresults=pd.DataFrame(testscores,columns=['model','variable_count','test_accuracy','test_params','test_precision','test_recall','test_f1','test_roc_auc','test_kappa'])
         
         testgsresults.to_csv('testgsresult_'+str(k)+'.csv')
 
@@ -253,7 +253,7 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
         
         train_precision,train_recall, train_f1, support_ = metrics.precision_recall_fscore_support(y_train, clf_trainpredicted, average='weighted')
 
-        #train_roc_auc = round(roc_auc_score(y_train, clf_trainpredicted,average='weighted'), 6)
+        train_roc_auc = round(roc_auc_score(y_train, clf_trainpredicted,average='weighted'), 6)
         train_kappa = round(cohen_kappa_score(y_train, clf_trainpredicted),6)
 
         #train score değerleri  düzenlendi elde edildi
@@ -265,10 +265,11 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
             'train_precision':train_precision,
             'train_recall':train_recall,
             'train_f1':train_f1,
-            'train_auc':train_accuracy
+            'train_roc_auc':train_roc_auc,
+            'train_kappa':train_kappa
             
         })
-        gsresults=pd.DataFrame(scores,columns=['model','variable_count','train_accuracy','best_params','train_precision','train_recall','train_f1','train_roc_auc'])
+        gsresults=pd.DataFrame(scores,columns=['model','variable_count','train_accuracy','best_params','train_precision','train_recall','train_f1','train_roc_auc','train_kappa'])
 
         print(gsresults)
         df2=pd.DataFrame(clf.cv_results_)
