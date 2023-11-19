@@ -53,8 +53,10 @@ for k in range(3,14,1):
 #df.to_csv(r'Results/all_results.csv', index=False)
 
 gsresults = pd.DataFrame(results)
+gsresults.columns=['model','variable_count','train_accuracy','best_params','train_precision','train_recall','train_f1','train_roc_auc','train_kappa']
 gsresults.to_csv(r'Results/traings_results.csv', index=False)
 
 testresults = pd.DataFrame(testresults)
+testresults.columns=['model','variable_count','test_accuracy','test_params','test_precision','test_recall','test_f1','test_roc_auc','test_kappa']
 testresults.to_csv(r'Results/testgs_results.csv', index=False)
 
