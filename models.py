@@ -212,14 +212,15 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
         
 
 
-        test_accuracy = round(accuracy_score(y_test, clf_testpredicted), 6)
-        # test_precision = round(precision_score(y_test, clf_testpredicted,average='weighted'), 6)
-        # test_recall = round(recall_score(y_test, clf_testpredicted,average='weighted'), 6)
-        # test_f1 = round(f1_score(y_test, clf_testpredicted,average='weighted'), 6)
-        test_precision,test_recall, test_f1, support_ = metrics.precision_recall_fscore_support(y_test, clf_testpredicted, average='weighted')
+        test_accuracy = round(accuracy_score(y_test, clf_testpredicted), 3)
+        test_precision = round(precision_score(y_test, clf_testpredicted,average='weighted'), 3)
+        test_recall = round(recall_score(y_test, clf_testpredicted,average='weighted'), 3)
+        test_f1 = round(f1_score(y_test, clf_testpredicted,average='weighted'), 3)
 
-        test_roc_auc = round(roc_auc_score(y_test, clf_testpredicted,average='weighted'), 6)
-        test_kappa = round(cohen_kappa_score(y_test, clf_testpredicted),6)
+        #test_precision,test_recall, test_f1, support_ = metrics.precision_recall_fscore_support(y_test, clf_testpredicted, average='weighted')
+
+        test_roc_auc = round(roc_auc_score(y_test, clf_testpredicted,average='weighted'), 3)
+        test_kappa = round(cohen_kappa_score(y_test, clf_testpredicted),3)
        
 
         testscores.append(
