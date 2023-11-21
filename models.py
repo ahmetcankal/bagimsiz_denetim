@@ -124,8 +124,17 @@ def azmodeluygula(data_x, data_y, feature_names, k, plotting):
 
 def azgridcv(data_x, data_y, feature_names, k, plotting):
     
+    n_classes=np.unique(data_y)
     
     model_params={
+        'NB':{
+            'model':GaussianNB(),
+            'params':{'priors': [None, [0.1,]* len(n_classes),] , 'var_smoothing': [1e-9, 1e-6, 1e-12] }
+            },
+        'KNN':{
+            'model':KNeighborsClassifier(algorithm='auto'),
+            'params':{'n_neighbors': range(1,30), 'leaf_size': (20,40,1),'p': (1,2),'weights': ('uniform', 'distance'),'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute'],'metric': ('minkowski', 'chebyshev')}
+            },
         'svm':{
             'model':svm.SVC(gamma='auto'),
             'params':{'C': [0.1,1,5,10,15,20,100,1000],'kernel': ['rbf','linear','poly','sigmoid'],'degree':[3,8] }
@@ -139,6 +148,7 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
             'model':DecisionTreeClassifier(),
             'params':{'min_samples_leaf': range(1,4),'min_samples_split': [2, 3, 4],'criterion':['gini', 'entropy'], 'max_depth':[2,4,6,8,10,12],'max_features': ['auto', 'sqrt', 'log2']
             }
+
 
          }
 #DT   leafnodelistrange=100 , samples range=5 maxdepth=,4,5,6,7,8,9,10,11,12 ekle
@@ -249,13 +259,15 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
         mean_f1 = clf.cv_results_['mean_test_f1'][i]
 
 
-        train_accuracy = round(accuracy_score(y_train, clf_trainpredicted), 6)
+        train_accuracy = round(accuracy_score(y_train, clf_trainpredicted), 3)
         
-        
-        train_precision,train_recall, train_f1, support_ = metrics.precision_recall_fscore_support(y_train, clf_trainpredicted, average='weighted')
+        train_precision = round(precision_score(y_train, clf_trainpredicted,average='weighted'), 3)
+        train_recall = round(recall_score(y_train, clf_trainpredicted,average='weighted'), 3)
+        train_f1 = round(f1_score(y_train, clf_trainpredicted,average='weighted'), 3)
+        #train_precision,train_recall, train_f1, support_ = metrics.precision_recall_fscore_support(y_train, clf_trainpredicted, average='weighted')
 
-        train_roc_auc = round(roc_auc_score(y_train, clf_trainpredicted,average='weighted'), 6)
-        train_kappa = round(cohen_kappa_score(y_train, clf_trainpredicted),6)
+        train_roc_auc = round(roc_auc_score(y_train, clf_trainpredicted,average='weighted'), 3)
+        train_kappa = round(cohen_kappa_score(y_train, clf_trainpredicted),3)
 
         #train score değerleri  düzenlendi elde edildi
         scores.append({

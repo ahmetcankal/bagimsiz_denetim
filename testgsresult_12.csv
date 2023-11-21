@@ -1,4 +1,6 @@
 ,model,variable_count,test_accuracy,test_params,test_precision,test_recall,test_f1,test_roc_auc,test_kappa
-0,svm,12,0.684,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.675,0.684,0.677,0.643,0.296
-1,random_forest,12,0.789,"{'criterion': 'entropy', 'max_depth': 9, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 10, 'n_estimators': 100}",0.788,0.789,0.782,0.75,0.525
-2,DT,12,0.789,"{'criterion': 'gini', 'max_depth': 10, 'max_features': 'log2', 'min_samples_leaf': 3, 'min_samples_split': 3}",0.801,0.789,0.792,0.792,0.563
+0,NB,12,0.568,"{'priors': None, 'var_smoothing': 1e-09}",0.653,0.568,0.568,0.611,0.193
+1,KNN,12,0.779,"{'algorithm': 'auto', 'leaf_size': 20, 'metric': 'minkowski', 'n_neighbors': 1, 'p': 2, 'weights': 'uniform'}",0.775,0.779,0.775,0.748,0.51
+2,svm,12,0.684,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.675,0.684,0.677,0.643,0.296
+3,random_forest,12,0.768,"{'criterion': 'gini', 'max_depth': 6, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 10, 'n_estimators': 50}",0.765,0.768,0.765,0.739,0.49
+4,DT,12,0.716,"{'criterion': 'gini', 'max_depth': 12, 'max_features': 'log2', 'min_samples_leaf': 1, 'min_samples_split': 4}",0.732,0.716,0.72,0.715,0.414
