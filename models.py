@@ -15,6 +15,11 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from xgboost import XGBClassifier
+
+
 
 #from sklearn.svm import SVR
 import utils
@@ -127,6 +132,18 @@ def azgridcv(data_x, data_y, feature_names, k, plotting):
     n_classes=np.unique(data_y)
     
     model_params={
+        'LDShrink':{
+            'model':LinearDiscriminantAnalysis(shrinkage='auto'),
+            'params':{'solver': ('lsqr','eigen'),'n_components': (1,5,1) ,  }
+            },
+        'LDSVD':{
+            'model':LinearDiscriminantAnalysis(solver='svd'),
+            'params':{'store_covariance' :(True, False),'n_components': (0,5,1) }
+            },
+        'XGB':{
+            'model':XGBClassifier(),
+            'params':{'objective':['binary:logistic'],'learning_rate': [0.001, 0.01, 0.1, 0.20, 0.25, 0.30],'max_depth': [3,4,5,6,8,10,12,15],'min_child_weight': [1,5,10,11],'subsample': [0.8], 'colsample_bytree': [0.7],'n_estimators': [5,100,500,1000] }
+            },
         'NB':{
             'model':GaussianNB(),
             'params':{'priors': [None, [0.1,]* len(n_classes),] , 'var_smoothing': [1e-9, 1e-6, 1e-12] }
