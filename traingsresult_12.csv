@@ -1,9 +1,9 @@
 ,model,variable_count,train_accuracy,best_params,train_precision,train_recall,train_f1,train_roc_auc,train_kappa
-0,LDShrink,12,0.678,"{'n_components': 1, 'solver': 'lsqr'}",0.677,0.678,0.657,0.635,0.288
-1,LDSVD,12,0.686,"{'n_components': 1, 'store_covariance': True}",0.687,0.686,0.665,0.642,0.304
-2,XGB,12,1.0,"{'colsample_bytree': 0.7, 'learning_rate': 0.2, 'max_depth': 5, 'min_child_weight': 1, 'n_estimators': 100, 'objective': 'binary:logistic', 'subsample': 0.8}",1.0,1.0,1.0,1.0,1.0
-3,NB,12,0.573,"{'priors': None, 'var_smoothing': 1e-09}",0.672,0.573,0.555,0.618,0.211
+0,LDShrink,12,0.686,"{'n_components': 1, 'solver': 'lsqr'}",0.686,0.686,0.666,0.643,0.306
+1,LDSVD,12,0.686,"{'n_components': 1, 'store_covariance': True}",0.686,0.686,0.666,0.643,0.306
+2,XGB,12,1.0,"{'colsample_bytree': 0.7, 'learning_rate': 0.25, 'max_depth': 6, 'min_child_weight': 1, 'n_estimators': 100, 'objective': 'binary:logistic', 'subsample': 0.8}",1.0,1.0,1.0,1.0,1.0
+3,NB,12,0.612,"{'priors': None, 'var_smoothing': 1e-09}",0.692,0.612,0.604,0.65,0.271
 4,KNN,12,1.0,"{'algorithm': 'auto', 'leaf_size': 20, 'metric': 'minkowski', 'n_neighbors': 1, 'p': 2, 'weights': 'uniform'}",1.0,1.0,1.0,1.0,1.0
-5,svm,12,0.704,"{'C': 1000, 'degree': 3, 'kernel': 'linear'}",0.708,0.704,0.686,0.663,0.347
-6,random_forest,12,0.968,"{'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 10, 'n_estimators': 50}",0.968,0.968,0.968,0.965,0.934
-7,DT,12,0.966,"{'criterion': 'gini', 'max_depth': 12, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 3}",0.967,0.966,0.965,0.959,0.928
+5,svm,12,0.731,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.738,0.731,0.716,0.692,0.408
+6,random_forest,12,0.979,"{'criterion': 'gini', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 10, 'n_estimators': 100}",0.979,0.979,0.979,0.975,0.956
+7,DT,12,0.821,"{'criterion': 'gini', 'max_depth': 6, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 2}",0.827,0.821,0.815,0.796,0.614

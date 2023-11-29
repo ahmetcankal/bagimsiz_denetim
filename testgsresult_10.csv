@@ -1,9 +1,9 @@
 ,model,variable_count,test_accuracy,test_params,test_precision,test_recall,test_f1,test_roc_auc,test_kappa
 0,LDShrink,10,0.747,"{'n_components': 1, 'solver': 'lsqr'}",0.743,0.747,0.736,0.699,0.423
-1,LDSVD,10,0.726,"{'n_components': 1, 'store_covariance': True}",0.724,0.726,0.706,0.664,0.358
-2,XGB,10,0.853,"{'colsample_bytree': 0.7, 'learning_rate': 0.25, 'max_depth': 10, 'min_child_weight': 1, 'n_estimators': 100, 'objective': 'binary:logistic', 'subsample': 0.8}",0.853,0.853,0.853,0.842,0.683
-3,NB,10,0.579,"{'priors': None, 'var_smoothing': 1e-09}",0.66,0.579,0.58,0.619,0.208
-4,KNN,10,0.811,"{'algorithm': 'auto', 'leaf_size': 20, 'metric': 'minkowski', 'n_neighbors': 6, 'p': 1, 'weights': 'distance'}",0.811,0.811,0.804,0.773,0.572
-5,svm,10,0.695,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.684,0.695,0.683,0.645,0.307
-6,random_forest,10,0.789,"{'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 10, 'n_estimators': 50}",0.787,0.789,0.786,0.762,0.537
-7,DT,10,0.674,"{'criterion': 'gini', 'max_depth': 6, 'max_features': 'log2', 'min_samples_leaf': 2, 'min_samples_split': 3}",0.71,0.674,0.679,0.688,0.349
+1,LDSVD,10,0.747,"{'n_components': 1, 'store_covariance': True}",0.746,0.747,0.733,0.693,0.415
+2,XGB,10,0.853,"{'colsample_bytree': 0.7, 'learning_rate': 0.01, 'max_depth': 5, 'min_child_weight': 1, 'n_estimators': 1000, 'objective': 'binary:logistic', 'subsample': 0.8}",0.853,0.853,0.849,0.824,0.672
+3,NB,10,0.568,"{'priors': None, 'var_smoothing': 1e-09}",0.653,0.568,0.568,0.611,0.193
+4,KNN,10,0.789,"{'algorithm': 'auto', 'leaf_size': 20, 'metric': 'minkowski', 'n_neighbors': 1, 'p': 2, 'weights': 'uniform'}",0.787,0.789,0.786,0.762,0.537
+5,svm,10,0.695,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.687,0.695,0.689,0.657,0.324
+6,random_forest,10,0.768,"{'criterion': 'gini', 'max_depth': 9, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 15, 'n_estimators': 50}",0.767,0.768,0.758,0.721,0.471
+7,DT,10,0.653,"{'criterion': 'gini', 'max_depth': 12, 'max_features': 'sqrt', 'min_samples_leaf': 3, 'min_samples_split': 2}",0.647,0.653,0.649,0.618,0.24

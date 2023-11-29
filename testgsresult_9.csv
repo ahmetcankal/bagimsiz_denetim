@@ -1,9 +1,9 @@
 ,model,variable_count,test_accuracy,test_params,test_precision,test_recall,test_f1,test_roc_auc,test_kappa
-0,LDShrink,9,0.758,"{'n_components': 1, 'solver': 'lsqr'}",0.757,0.758,0.745,0.707,0.443
-1,LDSVD,9,0.779,"{'n_components': 1, 'store_covariance': True}",0.781,0.779,0.768,0.73,0.492
-2,XGB,9,0.874,"{'colsample_bytree': 0.7, 'learning_rate': 0.1, 'max_depth': 8, 'min_child_weight': 1, 'n_estimators': 100, 'objective': 'binary:logistic', 'subsample': 0.8}",0.874,0.874,0.872,0.852,0.722
-3,NB,9,0.568,"{'priors': None, 'var_smoothing': 1e-09}",0.653,0.568,0.568,0.611,0.193
-4,KNN,9,0.789,"{'algorithm': 'auto', 'leaf_size': 20, 'metric': 'minkowski', 'n_neighbors': 5, 'p': 1, 'weights': 'distance'}",0.788,0.789,0.782,0.75,0.525
-5,svm,9,0.737,"{'C': 10, 'degree': 3, 'kernel': 'linear'}",0.768,0.737,0.7,0.655,0.354
-6,random_forest,9,0.789,"{'criterion': 'gini', 'max_depth': 7, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 10, 'n_estimators': 50}",0.791,0.789,0.78,0.744,0.519
-7,DT,9,0.768,"{'criterion': 'gini', 'max_depth': 10, 'max_features': 'log2', 'min_samples_leaf': 1, 'min_samples_split': 2}",0.766,0.768,0.767,0.745,0.496
+0,LDShrink,9,0.726,"{'n_components': 1, 'solver': 'lsqr'}",0.721,0.726,0.71,0.67,0.367
+1,LDSVD,9,0.747,"{'n_components': 1, 'store_covariance': True}",0.75,0.747,0.729,0.687,0.408
+2,XGB,9,0.874,"{'colsample_bytree': 0.7, 'learning_rate': 0.01, 'max_depth': 10, 'min_child_weight': 1, 'n_estimators': 1000, 'objective': 'binary:logistic', 'subsample': 0.8}",0.876,0.874,0.871,0.846,0.719
+3,NB,9,0.579,"{'priors': None, 'var_smoothing': 1e-09}",0.66,0.579,0.58,0.619,0.208
+4,KNN,9,0.779,"{'algorithm': 'auto', 'leaf_size': 20, 'metric': 'minkowski', 'n_neighbors': 6, 'p': 1, 'weights': 'distance'}",0.778,0.779,0.77,0.736,0.498
+5,svm,9,0.726,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.721,0.726,0.722,0.694,0.398
+6,random_forest,9,0.758,"{'criterion': 'gini', 'max_depth': 8, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 15, 'n_estimators': 50}",0.753,0.758,0.751,0.719,0.457
+7,DT,9,0.632,"{'criterion': 'gini', 'max_depth': 8, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 4}",0.644,0.632,0.636,0.619,0.231

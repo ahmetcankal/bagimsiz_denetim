@@ -1,9 +1,9 @@
 ,model,variable_count,train_accuracy,best_params,train_precision,train_recall,train_f1,train_roc_auc,train_kappa
-0,LDShrink,10,0.681,"{'n_components': 1, 'solver': 'lsqr'}",0.68,0.681,0.66,0.638,0.294
-1,LDSVD,10,0.683,"{'n_components': 1, 'store_covariance': True}",0.684,0.683,0.663,0.64,0.299
-2,XGB,10,1.0,"{'colsample_bytree': 0.7, 'learning_rate': 0.25, 'max_depth': 10, 'min_child_weight': 1, 'n_estimators': 100, 'objective': 'binary:logistic', 'subsample': 0.8}",1.0,1.0,1.0,1.0,1.0
-3,NB,10,0.591,"{'priors': None, 'var_smoothing': 1e-09}",0.678,0.591,0.579,0.632,0.237
-4,KNN,10,1.0,"{'algorithm': 'auto', 'leaf_size': 20, 'metric': 'minkowski', 'n_neighbors': 6, 'p': 1, 'weights': 'distance'}",1.0,1.0,1.0,1.0,1.0
-5,svm,10,0.718,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.727,0.718,0.699,0.675,0.374
-6,random_forest,10,0.966,"{'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 10, 'n_estimators': 50}",0.966,0.966,0.966,0.96,0.928
-7,DT,10,0.821,"{'criterion': 'gini', 'max_depth': 6, 'max_features': 'log2', 'min_samples_leaf': 2, 'min_samples_split': 3}",0.82,0.821,0.82,0.813,0.627
+0,LDShrink,10,0.697,"{'n_components': 1, 'solver': 'lsqr'}",0.699,0.697,0.677,0.654,0.329
+1,LDSVD,10,0.686,"{'n_components': 1, 'store_covariance': True}",0.686,0.686,0.667,0.644,0.307
+2,XGB,10,1.0,"{'colsample_bytree': 0.7, 'learning_rate': 0.01, 'max_depth': 5, 'min_child_weight': 1, 'n_estimators': 1000, 'objective': 'binary:logistic', 'subsample': 0.8}",1.0,1.0,1.0,1.0,1.0
+3,NB,10,0.596,"{'priors': None, 'var_smoothing': 1e-09}",0.665,0.596,0.59,0.63,0.237
+4,KNN,10,1.0,"{'algorithm': 'auto', 'leaf_size': 20, 'metric': 'minkowski', 'n_neighbors': 1, 'p': 2, 'weights': 'uniform'}",1.0,1.0,1.0,1.0,1.0
+5,svm,10,0.726,"{'C': 1000, 'degree': 3, 'kernel': 'rbf'}",0.726,0.726,0.715,0.693,0.404
+6,random_forest,10,0.921,"{'criterion': 'gini', 'max_depth': 9, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 15, 'n_estimators': 50}",0.924,0.921,0.92,0.908,0.832
+7,DT,10,0.918,"{'criterion': 'gini', 'max_depth': 12, 'max_features': 'sqrt', 'min_samples_leaf': 3, 'min_samples_split': 2}",0.918,0.918,0.918,0.911,0.829
